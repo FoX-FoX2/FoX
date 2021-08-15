@@ -595,7 +595,6 @@ end ,nil)
 end
 --     Source FoX     --
 local AbsRank = function(msg) if SUDO(msg.sender_user_id_) then FoXTEAM  = "المطور" elseif SecondSudo(msg) then FoXTEAM = "المطور" elseif SudoBot(msg) then FoXTEAM = "المطور" elseif ManagerAll(msg) then FoXTEAM = "المدير" elseif AdminAll(msg) then FoXTEAM = "الادمن" elseif AbsConstructor(msg) then FoXTEAM = "المالك" elseif BasicConstructor(msg) then FoXTEAM = "المنشئ" elseif Constructor(msg) then FoXTEAM = "المنشئ" elseif Manager(msg) then FoXTEAM = "المدير" elseif Admin(msg) then FoXTEAM = "الادمن" else FoXTEAM = "العضو" end return FoXTEAM end
-function IdRank(user_id,chat_id) if tonumber(user_id) == tonumber(218385683) then FoXTEAM = 'مبرمج السورس' elseif tonumber(user_id) == tonumber(FoX) then FoXTEAM = 'البوت' elseif SUDO(user_id) then FoXTEAM = 'المطور الاساسي' elseif redis:sismember(FoX..'Abs:SecondSudo:', user_id) then FoXTEAM = 'المطور الثانوي' elseif redis:sismember(FoX..'Abs:SudoBot:', user_id) then FoXTEAM = redis:get(FoX.."Abs:SudoBot:Rd"..chat_id) or 'المطور' elseif redis:sismember(FoX..'Abs:ManagerAll:', user_id) then FoXTEAM = redis:get(FoX.."Manager:Rd:Rd"..chat_id) or 'المدير العام' elseif redis:sismember(FoX..'Abs:AdminAll:', user_id) then FoXTEAM = redis:get(FoX.."Mod:Rd:Rd"..chat_id) or 'الادمن العام' elseif redis:sismember(FoX..'Abs:VipAll:', user_id) then FoXTEAM = redis:get(FoX.."Special:Rd:Rd"..chat_id) or 'المميز العام' elseif redis:sismember(FoX..'Basic:Constructor:'..chat_id, user_id) then FoXTEAM = 'المالك' elseif redis:sismember(FoX..'BasicConstructor:Rd:'..chat_id, user_id) then FoXTEAM = redis:get(FoX.."BasicConstructor:Rd:Rd"..chat_id) or 'المنشئ الاساسي' elseif redis:sismember(FoX..'Constructor:Rd:'..chat_id, user_id) then FoXTEAM = redis:get(FoX.."Constructor:Rd:Rd"..chat_id) or 'المنشئ' elseif redis:sismember(FoX..'Manager:Rd:'..chat_id, user_id) then FoXTEAM = redis:get(FoX.."Manager:Rd:Rd"..chat_id) or 'المدير' elseif redis:sismember(FoX..'Mod:Rd:'..chat_id, user_id) then FoXTEAM = redis:get(FoX.."Mod:Rd:Rd"..chat_id) or 'الادمن' elseif redis:sismember(FoX..'Special:Rd:'..chat_id, user_id) then  FoXTEAM = redis:get(FoX.."Special:Rd:Rd"..chat_id) or 'المميز' elseif redis:sismember(FoX..'Abs:Cleaner:'..chat_id, user_id) then  FoXTEAM = redis:get(FoX.."Abs:Cleaner:Rd"..chat_id) or 'المنظف' else FoXTEAM = redis:get(FoX.."Abs:mem:Rd"..chat_id) or 'العضو' end return FoXTEAM end
 --     Source FoX     --
 function RankChecking(user_id,chat_id)
 if SUDO(user_id) then
@@ -651,30 +650,44 @@ return var
 end 
 
 ----
-elseif tonumber(user_id) == tonumber(SUDO) then
-var = 'المطور الاساسي'  
-elseif database:sismember(bot_id.."HH6HHH:Sudo", user_id) then 
-var = 'المطور الاساسي²'  
-elseif tonumber(user_id) == tonumber(bot_id) then  
-var = 'البوت'
-elseif database:sismember(bot_id..'Sudo:User', user_id) then
-var = database:get(bot_id.."Sudo:Rd"..msg.chat_id_) or 'المطور'  
-elseif database:sismember(bot_id..'CoSu'..chat_id, user_id) then
-var =  'المالك'
-elseif database:sismember(bot_id..'Basic:Constructor'..chat_id, user_id) then
-var = database:get(bot_id.."BasicConstructor:Rd"..msg.chat_id_) or 'المنشئ اساسي'
-elseif database:sismember(bot_id..'Constructor'..chat_id, user_id) then
-var = database:get(bot_id.."Constructor:Rd"..msg.chat_id_) or 'المنشئ'  
-elseif database:sismember(bot_id..'Manager'..chat_id, user_id) then
-var = database:get(bot_id.."Manager:Rd"..msg.chat_id_) or 'المدير' 
-elseif database:sismember(bot_id..'Mod:User'..chat_id, user_id) then
-var = database:get(bot_id.."Mod:Rd"..msg.chat_id_) or 'الادمن'  
-elseif database:sismember(bot_id..'Special:User'..chat_id, user_id) then  
-var = database:get(bot_id.."Special:Rd"..msg.chat_id_) or 'المميز'  
-else  
-var = database:get(bot_id.."Memp:Rd"..msg.chat_id_) or 'العضو'
-end  
-
+function IdRank(user_id,chat_id) 
+if tonumber(user_id) == tonumber(218385683) then 
+FoXTEAM = 'مبرمج السورس'
+ elseif tonumber(user_id) == tonumber(FoX) then 
+FoXTEAM = 'البوت' 
+elseif SudoId(user_id) then
+FoXTEAM = 'المطور الاساسي' 
+elseif redis:sismember(FoX.."HH6HHH:Sudo", user_id) then 
+FoXTEAM = 'المطور الاساسي²'  
+elseif redis:sismember(FoX..'Abs:SecondSudo:', user_id) then 
+FoXTEAM = 'المطور الثانوي' 
+elseif redis:sismember(FoX..'Abs:SudoBot:', user_id) then 
+FoXTEAM = redis:get(FoX.."Abs:SudoBot:Rd"..chat_id) or 'المطور' 
+elseif redis:sismember(FoX..'Abs:ManagerAll:', user_id) then
+ FoXTEAM = redis:get(FoX.."Abs:Managers:Rd"..chat_id) or 'المدير العام' 
+elseif redis:sismember(FoX..'Abs:AdminAll:', user_id) then 
+FoXTEAM = redis:get(FoX.."Abs:Admins:Rd"..chat_id) or 'الادمن العام' 
+elseif redis:sismember(FoX..'Abs:VipAll:', user_id) then 
+FoXTEAM = redis:get(FoX.."Abs:VipMem:Rd"..chat_id) or 'المميز العام' 
+elseif redis:sismember(FoX..'Abs:AbsConstructor:'..chat_id, user_id) then 
+FoXTEAM = 'المالك' 
+elseif redis:sismember(FoX..'Abs:BasicConstructor:'..chat_id, user_id) then 
+FoXTEAM = redis:get(FoX.."BasicConstructor:Rd"..chat_id) or 'المنشئ الاساسي' 
+elseif redis:sismember(FoX..'Abs:Constructor:'..chat_id, user_id) then 
+FoXTEAM = redis:get(FoX.."Constructor:Rd"..chat_id) or 'المنشئ' 
+elseif redis:sismember(FoX..'Abs:Managers:'..chat_id, user_id) then 
+FoXTEAM = redis:get(FoX.."Manager:Rd"..chat_id) or 'المدير' 
+elseif redis:sismember(FoX..'Abs:Admins:'..chat_id, user_id) then 
+FoXTEAM = redis:get(FoX.."Mod:Rd"..chat_id) or 'الادمن' 
+elseif redis:sismember(FoX..'Abs:VipMem:'..chat_id, user_id) then  
+FoXTEAM = redis:get(FoX.."Special:Rd"..chat_id) or 'المميز' 
+elseif redis:sismember(FoX..'Abs:Cleaner:'..chat_id, user_id) then  
+FoXTEAM = redis:get(FoX.."Abs:Cleaner:Rd"..chat_id) or 'المنظف' 
+else 
+FoXTEAM = redis:get(FoX.."Memp:Rd"..chat_id) or 'العضو' 
+end 
+return FoXTEAM 
+end
 --     Source FoX     --
 local function Filters(msg, value)
 local abs = (FoX..'Abs:Filters:'..msg.chat_id_)
@@ -3355,7 +3368,7 @@ if text ==  'حذف نقاطي' and ChCheck(msg) or text ==  'مسح نقاطي'
 --     Source FoX     --
 if text == 'سمايلات' and SourceCh(msg) or text == 'السمايلات' and SourceCh(msg) then
 if not redis:get(FoX..'Abs:Lock:Games'..msg.chat_id_) then
-redis2 = {'🍏','🍎','🍐','🍊','🍋','🍌','🍉','🍇','🍓','🍈','🍒','🍑','🍍','🥥','🥝','🍅','🍆','🥑','🥦','🥒','🌶','🌽','🥕','🥔','🍠','🥐','🍞','🥖','🥨','🧀','🥚','🍳','🥞','🥓','🥩','🍗','🍖','🌭','🍔','🍟','🍕','🥪','🥙','🍼','☕️','🍵','🥤','🍶','🍺','🍻','🏀','⚽️','🏈','⚾️','🎾','🏐','🏉','🎱','🏓','🏸','🥅','🎰','🎮','🎳','🎯','🏆','🎻','🎸','🎺','🥁','🎹','🎼','🎧','🎤','🎬','🎨','🎭','🎪','🛎','📤','🎗','🏵','🎖','🏆','🥌','🛷','🚕','🚗','🚙','🚌','🚎','🏎','🚓','🚑','🚚','🚛','🚜','🇮🇶','⚔️','🛡','🔮','🌡','💣','⏱','🛢','📓','📗','📂','📅','📪','📫','📬','📭','⏰','📺','🎚','☎️','📡'}
+redis2 = {'🍏','🍎','🍐','🍊','🍋','🍌','🍉','🍇','🍓','🍈','🍒','🍑','🍍','🥥','🥝','🍅','🍆','🥑','🥦','🥒','🌶','🌽','🥕','🥔','🍠','🥐','🍞','🥖','🥨','🧀','🥚','🍳','🥞','🥓','🥩','🍗','🍖','🌭','🍔','🍟','🍕','🥪','🥙','🍼','☕️','🍵','🥤','🍶','🍺','🍻','🏀','⚽️','🏈','⚾️','🎾','🏐','🏉','🎱','🏓','🏸','🥅','🎰','🎮','🎳','🎯','🏆','🎻','🎸','🎺','🥁','🎹','🎼','🎧','🎤','🎬','🎨','🎭','🎪','🛎','📤','🎗','🏵','🎖','🏆','🥌','🛷','🚕','🚗','🚙','🚌','🚎','🏎','🚓','🚑','🚚','🚛','??','🇮🇶','⚔️','🛡','🔮','🌡','💣','⏱','🛢','📓','📗','📂','📅','📪','📫','📬','📭','⏰','📺','🎚','☎️','📡'}
 name = redis2[math.random(#redis2)]
 redis:set(FoX..'Abs:GameNum'..msg.chat_id_,name)
 redis:del(FoX..'Abs:Games:Ids'..msg.chat_id_)
