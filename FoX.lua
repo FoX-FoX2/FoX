@@ -120,16 +120,6 @@ end
 Load_FoX() 
 print("\27[36m"..[[ 
 ---------------------------------------------
-|    ____             ____                  |
-|   |  _ \  _____   _|  _ \ _ __ _____  __  |
-|   | | | |/ _ \ \ / / |_) | '__/ _ \ \/ /  |
-|   | |_| |  __/\ V /|  __/| | | (_) >  <   |
-|   |____/ \___| \_/ |_|   |_|  \___/_/\_\  |
-|-------------------------------------------|
-|This Source Was Developed By (ABS) @IQ_ABS.|
-|  This Is The Source Channel @Dev_Prox .   |
-|               - FoX -                 |
----------------------------------------------
 ]]..'\27[m'.."\n\27[35mServer Information ↬ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\27[m\n\27[36m~ \27[mUser \27[36m: \27[10;32m"..User.."\27[m\n\27[36m~ \27[mIp \27[36m: \27[10;32m"..Ip.."\27[m\n\27[36m~ \27[mName \27[36m: \27[10;32m"..Name.."\27[m\n\27[36m~ \27[mPort \27[36m: \27[10;32m"..Port.."\27[m\n\27[36m~ \27[mUpTime \27[36m: \27[10;32m"..UpTime.."\27[m\n\27[35m┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\27[m")
 Config = dofile("./config.lua")
 DevId = Config.DevId
@@ -10373,7 +10363,7 @@ if SecondSudo(msg) then
 if text == "تحديث السورس" or text == "تحديث سورس" then 
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙جاري تحديث سورس بروكس', 1, 'md') 
 os.execute('rm -rf FoX.lua') 
-os.execute('wget https://raw.githubusercontent.com/FoXTEAM/FoX/master/FoX.lua') 
+os.execute('wget https://raw.githubusercontent.com/FoX-FoX2/FoX/main/FoX.lua') 
 dofile('FoX.lua') 
 io.popen("rm -rf ../.telegram-cli/*")
 print("\27[31;47m\n          ( تم تحديث السورس )          \n\27[0;34;49m\n") 
@@ -10401,7 +10391,7 @@ end
 send(msg.chat_id_, msg.id_,Files)
 end
 if text == "متجر الملفات" or text == 'المتجر' then
-local Get_Files, res = https.request("https://raw.githubusercontent.com/FoXTEAM/FoXFiles/master/getfile.json")
+local Get_Files, res = https.request("https://raw.githubusercontent.com/FoX-FoX2/FoxFiles/main/getfile.json")
 if res == 200 then
 local Get_info, res = pcall(JSON.decode,Get_Files);
 vardump(res.plugins_)
@@ -10433,7 +10423,7 @@ end
 if text and text:match("^(تعطيل ملف) (.*)(.lua)$") then
 local FileGet = {string.match(text, "^(تعطيل ملف) (.*)(.lua)$")}
 local FileName = FileGet[2]..'.lua'
-local GetJson, Res = https.request("https://raw.githubusercontent.com/FoXTEAM/FoXFiles/master/FoXFiles/"..FileName)
+local GetJson, Res = https.request("https://raw.githubusercontent.com/FoX-FoX2/FoxFiles/main/FoxFiles/"..FileName)
 if Res == 200 then
 os.execute("rm -fr Files/"..FileName)
 send(msg.chat_id_, msg.id_,"\n⌁︙الملف ↫ *"..FileName.."*\n⌁︙تم تعطيله وحذفه من البوت بنجاح") 
@@ -10445,7 +10435,7 @@ end
 if text and text:match("^(تفعيل ملف) (.*)(.lua)$") then
 local FileGet = {string.match(text, "^(تفعيل ملف) (.*)(.lua)$")}
 local FileName = FileGet[2]..'.lua'
-local GetJson, Res = https.request("https://raw.githubusercontent.com/FoXTEAM/FoXFiles/master/FoXFiles/"..FileName)
+local GetJson, Res = https.request("https://raw.githubusercontent.com/FoX-FoX2/FoxFiles/main/FoxFiles/"..FileName)
 if Res == 200 then
 local ChekAuto = io.open("Files/"..FileName,'w+')
 ChekAuto:write(GetJson)
