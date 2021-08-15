@@ -152,7 +152,7 @@ end
 ----------  Sudo  ----------
 function Sudo(msg) 
 local var = false 
-for k,v in pairs(SUDOs) do 
+for k,v in pairs(SudoIds) do 
 if msg.sender_user_id_ == v then 
 var = true 
 end end 
@@ -161,9 +161,9 @@ var = true
 end 
 return var 
 end
-function SUDO(user_id) 
+function SudoId(user_id) 
 local var = false 
-for k,v in pairs(SUDOs) do 
+for k,v in pairs(SudoIds) do 
 if user_id == v then 
 var = true 
 end end 
@@ -10363,7 +10363,7 @@ if SecondSudo(msg) then
 if text == "تحديث السورس" or text == "تحديث سورس" then 
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙جاري تحديث سورس بروكس', 1, 'md') 
 os.execute('rm -rf FoX.lua') 
-os.execute('wget https://raw.githubusercontent.com/FoXTEAM/FoX/master/FoX.lua') 
+os.execute('wget https://raw.githubusercontent.com/FoX-FoX2/FoX/main/FoX.lua') 
 dofile('FoX.lua') 
 io.popen("rm -rf ../.telegram-cli/*")
 print("\27[31;47m\n          ( تم تحديث السورس )          \n\27[0;34;49m\n") 
@@ -10391,7 +10391,7 @@ end
 send(msg.chat_id_, msg.id_,Files)
 end
 if text == "متجر الملفات" or text == 'المتجر' then
-local Get_Files, res = https.request("https://raw.githubusercontent.com/FoXTEAM/FoXFiles/master/getfile.json")
+local Get_Files, res = https.request("https://raw.githubusercontent.com/FoX-FoX2/FoxFiles/main/getfile.json")
 if res == 200 then
 local Get_info, res = pcall(JSON.decode,Get_Files);
 vardump(res.plugins_)
