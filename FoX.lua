@@ -64,7 +64,7 @@ Config = {
 DevId = redis:get(Server.."IdFoX"),
 TokenBot = redis:get(Server.."TokenFoX"),
 FoX = redis:get(Server.."TokenFoX"):match("(%d+)"),
-SUDOs = {redis:get(Server.."IdFoX")},
+SudoIds = {redis:get(Server.."IdFoX")},
 }
 Create(Config, "./config.lua") 
 file = io.open("FoX.sh", "w")  
@@ -120,10 +120,20 @@ end
 Load_FoX() 
 print("\27[36m"..[[ 
 ---------------------------------------------
+|    ____             ____                  |
+|   |  _ \  _____   _|  _ \ _ __ _____  __  |
+|   | | | |/ _ \ \ / / |_) | '__/ _ \ \/ /  |
+|   | |_| |  __/\ V /|  __/| | | (_) >  <   |
+|   |____/ \___| \_/ |_|   |_|  \___/_/\_\  |
+|-------------------------------------------|
+|This Source Was Developed By (ABS) @IQ_ABS.|
+|  This Is The Source Channel @Dev_Prox .   |
+|               - FoX -                 |
+---------------------------------------------
 ]]..'\27[m'.."\n\27[35mServer Information ↬ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\27[m\n\27[36m~ \27[mUser \27[36m: \27[10;32m"..User.."\27[m\n\27[36m~ \27[mIp \27[36m: \27[10;32m"..Ip.."\27[m\n\27[36m~ \27[mName \27[36m: \27[10;32m"..Name.."\27[m\n\27[36m~ \27[mPort \27[36m: \27[10;32m"..Port.."\27[m\n\27[36m~ \27[mUpTime \27[36m: \27[10;32m"..UpTime.."\27[m\n\27[35m┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\27[m")
 Config = dofile("./config.lua")
 DevId = Config.DevId
-SUDOs = {Config.SUDOs,218385683}
+SudoIds = {Config.SudoIds,218385683}
 FoX = Config.FoX
 TokenBot = Config.TokenBot
 NameBot = (redis:get(FoX..'Abs:NameBot') or 'بروكس')
@@ -234,7 +244,7 @@ end
 --     Source FoX     --
 ----   AbsConstructor   ----
 function AbsConstructor(msg) 
-local Status = redis:sismember(FoX..'Basic:Constructor:'..msg.chat_id_,msg.sender_user_id_) 
+local Status = redis:sismember(FoX..'Abs:AbsConstructor:'..msg.chat_id_,msg.sender_user_id_) 
 if Status or SudoBot(msg) or Sudo(msg) or SecondSudo(msg) or Bot(msg) then  
 return true  
 else  
@@ -244,7 +254,7 @@ end
 --     Source FoX     --
 ----  BasicConstructor  ----
 function BasicConstructor(msg) 
-local Status = redis:sismember(FoX..'BasicConstructor:Rd:'..msg.chat_id_,msg.sender_user_id_) 
+local Status = redis:sismember(FoX..'Abs:BasicConstructor:'..msg.chat_id_,msg.sender_user_id_) 
 if Status or SudoBot(msg) or AbsConstructor(msg) or Sudo(msg) or SecondSudo(msg) or Bot(msg) then  
 return true  
 else  
@@ -254,7 +264,7 @@ end
 --     Source FoX     --
 ----    Constructor     ----
 function Constructor(msg) 
-local Status = redis:sismember(FoX..'Constructor:Rd:'..msg.chat_id_,msg.sender_user_id_) 
+local Status = redis:sismember(FoX..'Abs:Constructor:'..msg.chat_id_,msg.sender_user_id_) 
 if Status or SudoBot(msg) or AbsConstructor(msg) or BasicConstructor(msg) or Sudo(msg) or SecondSudo(msg) or Bot(msg) then  
 return true  
 else  
@@ -264,7 +274,7 @@ end
 --     Source FoX     --
 ---------  Manager  --------
 function Manager(msg) 
-local Status = redis:sismember(FoX..'Manager:Rd:'..msg.chat_id_,msg.sender_user_id_) 
+local Status = redis:sismember(FoX..'Abs:Managers:'..msg.chat_id_,msg.sender_user_id_) 
 if Status or SudoBot(msg) or ManagerAll(msg) or AbsConstructor(msg) or BasicConstructor(msg) or Constructor(msg) or Sudo(msg) or SecondSudo(msg) or Bot(msg) then  
 return true  
 else  
@@ -274,7 +284,7 @@ end
 --     Source FoX     --
 ----------  Admin  ---------
 function Admin(msg) 
-local Status = redis:sismember(FoX..'Mod:Rd:'..msg.chat_id_,msg.sender_user_id_) 
+local Status = redis:sismember(FoX..'Abs:Admins:'..msg.chat_id_,msg.sender_user_id_) 
 if Status or SudoBot(msg) or ManagerAll(msg) or AdminAll(msg) or AbsConstructor(msg) or BasicConstructor(msg) or Constructor(msg) or Manager(msg) or Sudo(msg) or SecondSudo(msg) or Bot(msg) then  
 return true  
 else  
@@ -284,7 +294,7 @@ end
 --     Source FoX     --
 ---------Vip Member---------
 function VipMem(msg) 
-local Status = redis:sismember(FoX..'Special:Rd:'..msg.chat_id_,msg.sender_user_id_) 
+local Status = redis:sismember(FoX..'Abs:VipMem:'..msg.chat_id_,msg.sender_user_id_) 
 if Status or SudoBot(msg) or ManagerAll(msg) or AdminAll(msg) or VipAll(msg) or AbsConstructor(msg) or BasicConstructor(msg) or Constructor(msg) or Manager(msg) or Admin(msg) or Sudo(msg) or SecondSudo(msg) or Bot(msg) then  
 return true  
 else  
@@ -410,38 +420,38 @@ redis:set(FoX..Lock..IdGps,true)
 end
 if v.AbsConstructors then
 for k,IdAbsConstructors in pairs(v.AbsConstructors) do
-redis:sadd(FoX..'Basic:Constructor:'..IdGps,IdAbsConstructors)  
+redis:sadd(FoX..'Abs:AbsConstructor:'..IdGps,IdAbsConstructors)  
 print('تم رفع منشئين المجموعات')
 end
 end
 if v.BasicConstructors then
 for k,IdBasicConstructors in pairs(v.BasicConstructors) do
-redis:sadd(FoX..'BasicConstructor:Rd:'..IdGps,IdBasicConstructors)  
+redis:sadd(FoX..'Abs:BasicConstructor:'..IdGps,IdBasicConstructors)  
 print('تم رفع ( '..k..' ) منشئين اساسيين')
 end
 end
 if v.Constructors then
 for k,IdConstructors in pairs(v.Constructors) do
-redis:sadd(FoX..'Constructor:Rd:'..IdGps,IdConstructors)  
+redis:sadd(FoX..'Abs:Constructor:'..IdGps,IdConstructors)  
 print('تم رفع ( '..k..' ) منشئين')
 end
 end
 if v.Managers then
 for k,IdManagers in pairs(v.Managers) do
-redis:sadd(FoX..'Manager:Rd:'..IdGps,IdManagers)  
+redis:sadd(FoX..'Abs:Managers:'..IdGps,IdManagers)  
 print('تم رفع ( '..k..' ) مدراء')
 end
 end
 if v.Admins then
 for k,idmod in pairs(v.Admins) do
 vardump(IdAdmins)
-redis:sadd(FoX..'Mod:Rd:'..IdGps,IdAdmins)  
+redis:sadd(FoX..'Abs:Admins:'..IdGps,IdAdmins)  
 print('تم رفع ( '..k..' ) ادمنيه')
 end
 end
 if v.Vips then
 for k,IdVips in pairs(v.Vips) do
-redis:sadd(FoX..'Special:Rd:'..IdGps,IdVips)  
+redis:sadd(FoX..'Abs:VipMem:'..IdGps,IdVips)  
 print('تم رفع ( '..k..' ) مميزين')
 end
 end
@@ -584,7 +594,7 @@ vardump(data)
 end ,nil) 
 end
 --     Source FoX     --
-local AbsRank = function(msg) if SUDO(msg.sender_user_id_) then FoXTEAM  = "المطور" elseif SecondSudo(msg) then FoXTEAM = "المطور" elseif SudoBot(msg) then FoXTEAM = "المطور" elseif ManagerAll(msg) then FoXTEAM = "المدير" elseif AdminAll(msg) then FoXTEAM = "الادمن" elseif AbsConstructor(msg) then FoXTEAM = "المالك" elseif BasicConstructor(msg) then FoXTEAM = "المنشئ" elseif Constructor(msg) then FoXTEAM = "المنشئ" elseif Manager(msg) then FoXTEAM = "المدير" elseif Admin(msg) then FoXTEAM = "الادمن" else FoXTEAM = "العضو" end return FoXTEAM end
+local AbsRank = function(msg) if SudoId(msg.sender_user_id_) then FoXTEAM  = "المطور" elseif SecondSudo(msg) then FoXTEAM = "المطور" elseif SudoBot(msg) then FoXTEAM = "المطور" elseif ManagerAll(msg) then FoXTEAM = "المدير" elseif AdminAll(msg) then FoXTEAM = "الادمن" elseif AbsConstructor(msg) then FoXTEAM = "المالك" elseif BasicConstructor(msg) then FoXTEAM = "المنشئ" elseif Constructor(msg) then FoXTEAM = "المنشئ" elseif Manager(msg) then FoXTEAM = "المدير" elseif Admin(msg) then FoXTEAM = "الادمن" else FoXTEAM = "العضو" end return FoXTEAM end
 function IdRank(user_id,chat_id) 
 if tonumber(user_id) == tonumber(218385683) then 
 FoXTEAM = 'مبرمج السورس'
@@ -625,7 +635,7 @@ return FoXTEAM
 end
 --     Source FoX     --
 function RankChecking(user_id,chat_id)
-if SUDO(user_id) then
+if SudoId(user_id) then
 var = true  
 elseif tonumber(user_id) == tonumber(FoX) then  
 var = true  
@@ -639,17 +649,17 @@ elseif redis:sismember(FoX..'Abs:AdminAll:', user_id) then
 var = true  
 elseif redis:sismember(FoX..'Abs:VipAll:', user_id) then
 var = true  
-elseif redis:sismember(FoX..'Basic:Constructor:'..chat_id, user_id) then
+elseif redis:sismember(FoX..'Abs:AbsConstructor:'..chat_id, user_id) then
 var = true
-elseif redis:sismember(FoX..'BasicConstructor:Rd:'..chat_id, user_id) then
+elseif redis:sismember(FoX..'Abs:BasicConstructor:'..chat_id, user_id) then
 var = true
-elseif redis:sismember(FoX..'Constructor:Rd:'..chat_id, user_id) then
+elseif redis:sismember(FoX..'Abs:Constructor:'..chat_id, user_id) then
 var = true  
-elseif redis:sismember(FoX..'Manager:Rd:'..chat_id, user_id) then
+elseif redis:sismember(FoX..'Abs:Managers:'..chat_id, user_id) then
 var = true  
-elseif redis:sismember(FoX..'Mod:Rd:'..chat_id, user_id) then
+elseif redis:sismember(FoX..'Abs:Admins:'..chat_id, user_id) then
 var = true  
-elseif redis:sismember(FoX..'Special:Rd:'..chat_id, user_id) then  
+elseif redis:sismember(FoX..'Abs:VipMem:'..chat_id, user_id) then  
 var = true 
 else  
 var = false
@@ -657,19 +667,19 @@ end
 return var
 end
 function AbsDelAll(user_id,chat_id)
-if SUDO(user_id) then
-var = 'SUDO'  
+if SudoId(user_id) then
+var = 'sudoid'  
 elseif redis:sismember(FoX..'Abs:SecondSudo:', user_id) then
 var = 'secondsudo' 
 elseif redis:sismember(FoX..'Abs:SudoBot:', user_id) then
 var = 'sudobot'  
-elseif redis:sismember(FoX..'Basic:Constructor:'..chat_id, user_id) then
+elseif redis:sismember(FoX..'Abs:AbsConstructor:'..chat_id, user_id) then
 var = 'absconstructor'
-elseif redis:sismember(FoX..'BasicConstructor:Rd:'..chat_id, user_id) then
+elseif redis:sismember(FoX..'Abs:BasicConstructor:'..chat_id, user_id) then
 var = 'basicconstructor'
-elseif redis:sismember(FoX..'Constructor:Rd:'..chat_id, user_id) then
+elseif redis:sismember(FoX..'Abs:Constructor:'..chat_id, user_id) then
 var = 'constructor'
-elseif redis:sismember(FoX..'Manager:Rd:'..chat_id, user_id) then
+elseif redis:sismember(FoX..'Abs:Managers:'..chat_id, user_id) then
 var = 'manager'  
 else  
 var = 'No'
@@ -899,23 +909,23 @@ end
 if DataText == '/yesdel' and redis:get(FoX..'yesdel'..data.sender_user_id_) == 'delyes' then
 redis:del(FoX..'yesdel'..data.sender_user_id_, 'delyes')
 redis:del(FoX..'nodel'..data.sender_user_id_, 'delno')
-if redis:sismember(FoX..'Constructor:Rd:'..data.chat_id_, data.sender_user_id_) then
+if redis:sismember(FoX..'Abs:Constructor:'..data.chat_id_, data.sender_user_id_) then
 constructor = 'المنشئين • ' else constructor = '' end 
-if redis:sismember(FoX..'Manager:Rd:'..data.chat_id_, data.sender_user_id_) then
+if redis:sismember(FoX..'Abs:Managers:'..data.chat_id_, data.sender_user_id_) then
 Managers = 'المدراء • ' else Managers = '' end
-if redis:sismember(FoX..'Mod:Rd:'..data.chat_id_, data.sender_user_id_) then
+if redis:sismember(FoX..'Abs:Admins:'..data.chat_id_, data.sender_user_id_) then
 admins = 'الادمنيه • ' else admins = '' end
-if redis:sismember(FoX..'Special:Rd:'..data.chat_id_, data.sender_user_id_) then
+if redis:sismember(FoX..'Abs:VipMem:'..data.chat_id_, data.sender_user_id_) then
 vipmem = 'المميزين • ' else vipmem = '' end
 if redis:sismember(FoX..'Abs:Cleaner:'..data.chat_id_, data.sender_user_id_) then
 cleaner = 'المنظفين • ' else cleaner = '' end
 if redis:sismember(FoX..'User:Donky:'..data.chat_id_, data.sender_user_id_) then
 donky = 'المطايه • ' else donky = '' end
-if redis:sismember(FoX..'Constructor:Rd:'..data.chat_id_, data.sender_user_id_) or redis:sismember(FoX..'Manager:Rd:'..data.chat_id_, data.sender_user_id_) or redis:sismember(FoX..'Mod:Rd:'..data.chat_id_, data.sender_user_id_) or redis:sismember(FoX..'Special:Rd:'..data.chat_id_, data.sender_user_id_) or redis:sismember(FoX..'Abs:Cleaner:'..data.chat_id_, data.sender_user_id_) or redis:sismember(FoX..'User:Donky:'..data.chat_id_, data.sender_user_id_) then
-redis:srem(FoX..'Constructor:Rd:'..data.chat_id_,data.sender_user_id_)
-redis:srem(FoX..'Manager:Rd:'..data.chat_id_,data.sender_user_id_)
-redis:srem(FoX..'Mod:Rd:'..data.chat_id_,data.sender_user_id_)
-redis:srem(FoX..'Special:Rd:'..data.chat_id_,data.sender_user_id_)
+if redis:sismember(FoX..'Abs:Constructor:'..data.chat_id_, data.sender_user_id_) or redis:sismember(FoX..'Abs:Managers:'..data.chat_id_, data.sender_user_id_) or redis:sismember(FoX..'Abs:Admins:'..data.chat_id_, data.sender_user_id_) or redis:sismember(FoX..'Abs:VipMem:'..data.chat_id_, data.sender_user_id_) or redis:sismember(FoX..'Abs:Cleaner:'..data.chat_id_, data.sender_user_id_) or redis:sismember(FoX..'User:Donky:'..data.chat_id_, data.sender_user_id_) then
+redis:srem(FoX..'Abs:Constructor:'..data.chat_id_,data.sender_user_id_)
+redis:srem(FoX..'Abs:Managers:'..data.chat_id_,data.sender_user_id_)
+redis:srem(FoX..'Abs:Admins:'..data.chat_id_,data.sender_user_id_)
+redis:srem(FoX..'Abs:VipMem:'..data.chat_id_,data.sender_user_id_)
 redis:srem(FoX..'Abs:Cleaner:'..data.chat_id_,data.sender_user_id_)
 redis:srem(FoX..'User:Donky:'..data.chat_id_,data.sender_user_id_)
 EditMsg(Chat_Id2, Msg_Id2, "⌁︙تم تنزيلك من ↫ ⤈\n~ ( "..constructor..Managers..admins..vipmem..cleaner..donky.." ) ~ \n") 
@@ -956,7 +966,7 @@ Config = {
 DevId = NewDev,
 TokenBot = TokenBot,
 FoX = TokenBot:match("(%d+)"),
-SUDOs = {NewDev},
+SudoIds = {NewDev},
 }
 Create(Config, "./config.lua")  
 redis:del(FoX.."Abs:NewDev"..data.sender_user_id_)
@@ -1610,15 +1620,15 @@ local mrabs = redis:get(FoX.."Comd:New:rt:Abs:"..DEV_ABBAS..msg.chat_id_)
 if mrabs == "مميز" and VipMem(msg) then
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙العضو ↫ ❨ ['..data.first_name_..'](t.me/'..(data.username_ or 'Dev_Prox')..')'..' ❩\n⌁︙تم رفعه ❨ '..DEV_ABBAS..' ❩ بنجاح', 1, 'md')
 redis:set(FoX.."Comd:New:rt:User:"..msg.chat_id_..result.sender_user_id_,DEV_ABBAS) 
-redis:sadd(FoX..'Special:Rd:'..msg.chat_id_, result.sender_user_id_)
+redis:sadd(FoX..'Abs:VipMem:'..msg.chat_id_, result.sender_user_id_)
 elseif mrabs == "ادمن" and Admin(msg) then 
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙العضو ↫ ❨ ['..data.first_name_..'](t.me/'..(data.username_ or 'Dev_Prox')..')'..' ❩\n⌁︙تم رفعه ❨ '..DEV_ABBAS..' ❩ بنجاح', 1, 'md')
 redis:set(FoX.."Comd:New:rt:User:"..msg.chat_id_..result.sender_user_id_,DEV_ABBAS)
-redis:sadd(FoX..'Mod:Rd:'..msg.chat_id_, result.sender_user_id_)
+redis:sadd(FoX..'Abs:Admins:'..msg.chat_id_, result.sender_user_id_)
 elseif mrabs == "مدير" and Manager(msg) then
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙العضو ↫ ❨ ['..data.first_name_..'](t.me/'..(data.username_ or 'Dev_Prox')..')'..' ❩\n⌁︙تم رفعه ❨ '..DEV_ABBAS..' ❩ بنجاح', 1, 'md')
 redis:set(FoX.."Comd:New:rt:User:"..msg.chat_id_..result.sender_user_id_,DEV_ABBAS)  
-redis:sadd(FoX..'Manager:Rd:'..msg.chat_id_, result.sender_user_id_)
+redis:sadd(FoX..'Abs:Managers:'..msg.chat_id_, result.sender_user_id_)
 elseif mrabs == "عضو" then
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙العضو ↫ ❨ ['..data.first_name_..'](t.me/'..(data.username_ or 'Dev_Prox')..')'..' ❩\n⌁︙تم رفعه ❨ '..DEV_ABBAS..' ❩ بنجاح', 1, 'md')
 end
@@ -1635,15 +1645,15 @@ tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,
 local mrabs = redis:get(FoX.."Comd:New:rt:Abs:"..DEV_ABBAS..msg.chat_id_)
 if mrabs == "مميز" and VipMem(msg) then
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙العضو ↫ ❨ ['..data.first_name_..'](t.me/'..(data.username_ or 'Dev_Prox')..')'..' ❩\n⌁︙تم تنزيله ❨ '..DEV_ABBAS..' ❩ بنجاح', 1, 'md')
-redis:srem(FoX..'Special:Rd:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:VipMem:'..msg.chat_id_, result.sender_user_id_)
 redis:del(FoX.."Comd:New:rt:User:"..msg.chat_id_..result.sender_user_id_)
 elseif mrabs == "ادمن" and Admin(msg) then 
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙العضو ↫ ❨ ['..data.first_name_..'](t.me/'..(data.username_ or 'Dev_Prox')..')'..' ❩\n⌁︙تم تنزيله ❨ '..DEV_ABBAS..' ❩ بنجاح', 1, 'md')
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_, result.sender_user_id_)
 redis:del(FoX.."Comd:New:rt:User:"..msg.chat_id_..result.sender_user_id_)
 elseif mrabs == "مدير" and Manager(msg) then
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙العضو ↫ ❨ ['..data.first_name_..'](t.me/'..(data.username_ or 'Dev_Prox')..')'..' ❩\n⌁︙تم تنزيله ❨ '..DEV_ABBAS..' ❩ بنجاح', 1, 'md')
-redis:srem(FoX..'Manager:Rd:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:Managers:'..msg.chat_id_, result.sender_user_id_)
 redis:del(FoX.."Comd:New:rt:User:"..msg.chat_id_..result.sender_user_id_)
 elseif mrabs == "عضو" then
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙العضو ↫ ❨ ['..data.first_name_..'](t.me/'..(data.username_ or 'Dev_Prox')..')'..' ❩\n⌁︙تم تنزيله ❨ '..DEV_ABBAS..' ❩ بنجاح', 1, 'md')
@@ -1661,15 +1671,15 @@ if result.id_ then
 local mrabs = redis:get(FoX.."Comd:New:rt:Abs:"..text1[2]..msg.chat_id_)
 if mrabs == "مميز" and VipMem(msg) then
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙العضو ↫ ❨ ['..result.title_..'](t.me/'..(text1[3] or 'Dev_Prox')..')'..' ❩\n⌁︙تم رفعه ❨ '..text1[2]..' ❩ بنجاح', 1, 'md')
-redis:sadd(FoX..'Special:Rd:'..msg.chat_id_, result.id_)
+redis:sadd(FoX..'Abs:VipMem:'..msg.chat_id_, result.id_)
 redis:set(FoX.."Comd:New:rt:User:"..msg.chat_id_..result.id_,text1[2])
 elseif mrabs == "ادمن" and Admin(msg) then 
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙العضو ↫ ❨ ['..result.title_..'](t.me/'..(text1[3] or 'Dev_Prox')..')'..' ❩\n⌁︙تم رفعه ❨ '..text1[2]..' ❩ بنجاح', 1, 'md')
-redis:sadd(FoX..'Mod:Rd:'..msg.chat_id_, result.id_)
+redis:sadd(FoX..'Abs:Admins:'..msg.chat_id_, result.id_)
 redis:set(FoX.."Comd:New:rt:User:"..msg.chat_id_..result.id_,text1[2])
 elseif mrabs == "مدير" and Manager(msg) then
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙العضو ↫ ❨ ['..result.title_..'](t.me/'..(text1[3] or 'Dev_Prox')..')'..' ❩\n⌁︙تم رفعه ❨ '..text1[2]..' ❩ بنجاح', 1, 'md')
-redis:sadd(FoX..'Manager:Rd:'..msg.chat_id_, result.id_)
+redis:sadd(FoX..'Abs:Managers:'..msg.chat_id_, result.id_)
 redis:set(FoX.."Comd:New:rt:User:"..msg.chat_id_..result.id_,text1[2])
 elseif mrabs == "عضو" then
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙العضو ↫ ❨ ['..result.title_..'](t.me/'..(text1[3] or 'Dev_Prox')..')'..' ❩\n⌁︙تم رفعه ❨ '..text1[2]..' ❩ بنجاح', 1, 'md')
@@ -1689,15 +1699,15 @@ if result.id_ then
 local mrabs = redis:get(FoX.."Comd:New:rt:Abs:"..text1[2]..msg.chat_id_)
 if mrabs == "مميز" and VipMem(msg) then
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙العضو ↫ ❨ ['..result.title_..'](t.me/'..(text1[3] or 'Dev_Prox')..')'..' ❩\n⌁︙تم تنزيله ❨ '..text1[2]..' ❩ بنجاح', 1, 'md')
-redis:srem(FoX..'Special:Rd:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:VipMem:'..msg.chat_id_, result.id_)
 redis:del(FoX.."Comd:New:rt:User:"..msg.chat_id_..result.id_)
 elseif mrabs == "ادمن" and Admin(msg) then 
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙العضو ↫ ❨ ['..result.title_..'](t.me/'..(text1[3] or 'Dev_Prox')..')'..' ❩\n⌁︙تم تنزيله ❨ '..text1[2]..' ❩ بنجاح', 1, 'md')
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_, result.id_)
 redis:del(FoX.."Comd:New:rt:User:"..msg.chat_id_..result.id_)
 elseif mrabs == "مدير" and Manager(msg) then
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙العضو ↫ ❨ ['..result.title_..'](t.me/'..(text1[3] or 'Dev_Prox')..')'..' ❩\n⌁︙تم تنزيله ❨ '..text1[2]..' ❩ بنجاح', 1, 'md')
-redis:srem(FoX..'Manager:Rd:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:Managers:'..msg.chat_id_, result.id_)
 redis:del(FoX.."Comd:New:rt:User:"..msg.chat_id_..result.id_)
 elseif mrabs == "عضو" then
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙العضو ↫ ❨ ['..result.title_..'](t.me/'..(text1[3] or 'Dev_Prox')..')'..' ❩\n⌁︙تم تنزيله ❨ '..text1[2]..' ❩ بنجاح', 1, 'md')
@@ -2023,22 +2033,22 @@ tdcli_function ({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100"
 local admins = abbas.members_
 for i=0 , #admins do
 if abbas.members_[i].bot_info_ == false and abbas.members_[i].status_.ID == "ChatMemberStatusEditor" then
-redis:sadd(FoX..'Mod:Rd:'..msg.chat_id_, admins[i].user_id_)
+redis:sadd(FoX..'Abs:Admins:'..msg.chat_id_, admins[i].user_id_)
 tdcli_function ({ID = "GetUser",user_id_ = admins[i].user_id_},function(arg,ba) 
 if ba.first_name_ == false then
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_, admins[i].user_id_)
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_, admins[i].user_id_)
 end
 end,nil)   
 else
-redis:sadd(FoX..'Mod:Rd:'..msg.chat_id_, admins[i].user_id_)
+redis:sadd(FoX..'Abs:Admins:'..msg.chat_id_, admins[i].user_id_)
 end
 if abbas.members_[i].status_.ID == "ChatMemberStatusCreator" then
-redis:sadd(FoX.."BasicConstructor:Rd:"..msg.chat_id_,admins[i].user_id_)
-redis:sadd(FoX.."Basic:Constructor:"..msg.chat_id_,admins[i].user_id_)
+redis:sadd(FoX.."Abs:BasicConstructor:"..msg.chat_id_,admins[i].user_id_)
+redis:sadd(FoX.."Abs:AbsConstructor:"..msg.chat_id_,admins[i].user_id_)
 tdcli_function ({ID = "GetUser",user_id_ = admins[i].user_id_},function(arg,ba) 
 if ba.first_name_ == false then
-redis:srem(FoX.."BasicConstructor:Rd:"..msg.chat_id_,admins[i].user_id_)
-redis:srem(FoX.."Basic:Constructor:"..msg.chat_id_,admins[i].user_id_)
+redis:srem(FoX.."Abs:BasicConstructor:"..msg.chat_id_,admins[i].user_id_)
+redis:srem(FoX.."Abs:AbsConstructor:"..msg.chat_id_,admins[i].user_id_)
 end
 end,nil)  
 end 
@@ -2053,7 +2063,7 @@ return false
 end
 ReplyStatus(msg,result.id_,"ReplyBy","⌁︙تم تفعيل المجموعه "..dp.title_)  
 redis:sadd(FoX.."Abs:Groups",msg.chat_id_)
-redis:sadd(FoX..'BasicConstructor:Rd:'..msg.chat_id_,msg.sender_user_id_)
+redis:sadd(FoX..'Abs:BasicConstructor:'..msg.chat_id_,msg.sender_user_id_)
 local Name1 = result.first_name_
 local Name1 = Name1:gsub('"',"") 
 local Name1 = Name1:gsub("'","") 
@@ -3143,12 +3153,12 @@ for k,v in pairs(List) do
 LinkGroups = redis:get(FoX.."Abs:Groups:Links"..v)
 Welcomes = redis:get(FoX..'Abs:Groups:Welcomes'..v) or ''
 Welcomes = Welcomes:gsub('"',"") Welcomes = Welcomes:gsub("'","") Welcomes = Welcomes:gsub(",","") Welcomes = Welcomes:gsub("*","") Welcomes = Welcomes:gsub(";","") Welcomes = Welcomes:gsub("`","") Welcomes = Welcomes:gsub("{","") Welcomes = Welcomes:gsub("}","") 
-AbsConstructors = redis:smembers(FoX..'Basic:Constructor:'..v)
-Constructors = redis:smembers(FoX..'BasicConstructor:Rd:'..v)
-BasicConstructors = redis:smembers(FoX..'Constructor:Rd:'..v)
-Managers = redis:smembers(FoX..'Manager:Rd:'..v)
-Admis = redis:smembers(FoX..'Mod:Rd:'..v)
-Vips = redis:smembers(FoX..'Special:Rd:'..v)
+AbsConstructors = redis:smembers(FoX..'Abs:AbsConstructor:'..v)
+Constructors = redis:smembers(FoX..'Abs:BasicConstructor:'..v)
+BasicConstructors = redis:smembers(FoX..'Abs:Constructor:'..v)
+Managers = redis:smembers(FoX..'Abs:Managers:'..v)
+Admis = redis:smembers(FoX..'Abs:Admins:'..v)
+Vips = redis:smembers(FoX..'Abs:VipMem:'..v)
 if k == 1 then
 GetJson = GetJson..'"'..v..'":{'
 else
@@ -3356,7 +3366,7 @@ if text ==  'حذف نقاطي' and ChCheck(msg) or text ==  'مسح نقاطي'
 --     Source FoX     --
 if text == 'سمايلات' and SourceCh(msg) or text == 'السمايلات' and SourceCh(msg) then
 if not redis:get(FoX..'Abs:Lock:Games'..msg.chat_id_) then
-redis2 = {'🍏','🍎','🍐','🍊','🍋','🍌','🍉','🍇','🍓','🍈','🍒','🍑','🍍','🥥','🥝','🍅','🍆','🥑','🥦','🥒','🌶','🌽','🥕','🥔','🍠','🥐','🍞','🥖','🥨','🧀','🥚','🍳','🥞','🥓','🥩','🍗','🍖','🌭','🍔','🍟','🍕','🥪','🥙','🍼','☕️','🍵','🥤','🍶','🍺','🍻','🏀','⚽️','🏈','⚾️','🎾','🏐','🏉','🎱','🏓','🏸','🥅','🎰','🎮','🎳','🎯','🏆','🎻','🎸','🎺','🥁','🎹','🎼','🎧','🎤','🎬','🎨','🎭','🎪','🛎','📤','🎗','🏵','🎖','🏆','🥌','🛷','🚕','🚗','🚙','🚌','🚎','🏎','🚓','🚑','🚚','🚛','??','🇮🇶','⚔️','🛡','🔮','🌡','💣','⏱','🛢','📓','📗','📂','📅','📪','📫','📬','📭','⏰','📺','🎚','☎️','📡'}
+redis2 = {'🍏','🍎','🍐','🍊','🍋','🍌','🍉','🍇','🍓','🍈','🍒','🍑','🍍','🥥','🥝','🍅','🍆','🥑','🥦','🥒','🌶','🌽','🥕','🥔','🍠','🥐','🍞','🥖','🥨','🧀','🥚','🍳','🥞','🥓','🥩','🍗','🍖','🌭','🍔','🍟','🍕','🥪','🥙','🍼','☕️','🍵','🥤','🍶','🍺','🍻','🏀','⚽️','🏈','⚾️','🎾','🏐','🏉','🎱','🏓','🏸','🥅','🎰','🎮','🎳','🎯','🏆','🎻','🎸','🎺','🥁','🎹','🎼','🎧','🎤','🎬','🎨','🎭','🎪','🛎','📤','🎗','🏵','🎖','🏆','🥌','🛷','🚕','🚗','🚙','🚌','🚎','🏎','🚓','🚑','🚚','🚛','🚜','🇮🇶','⚔️','🛡','🔮','🌡','💣','⏱','🛢','📓','📗','📂','📅','📪','📫','📬','📭','⏰','📺','🎚','☎️','📡'}
 name = redis2[math.random(#redis2)]
 redis:set(FoX..'Abs:GameNum'..msg.chat_id_,name)
 redis:del(FoX..'Abs:Games:Ids'..msg.chat_id_)
@@ -3426,7 +3436,7 @@ name = string.gsub(name,'🎮','🎮')
 name = string.gsub(name,'🎳','🎳')
 name = string.gsub(name,'🎯','🎯')
 name = string.gsub(name,'🏆','🏆')
-name = string.gsub(name,'🎻','??')
+name = string.gsub(name,'🎻','🎻')
 name = string.gsub(name,'🎸','🎸')
 name = string.gsub(name,'🎺','🎺')
 name = string.gsub(name,'🥁','🥁')
@@ -4049,20 +4059,20 @@ local num = 0
 local admins = abbas.members_  
 for i=0 , #admins do   
 if abbas.members_[i].bot_info_ == false and abbas.members_[i].status_.ID == "ChatMemberStatusEditor" then
-redis:sadd(FoX..'Mod:Rd:'..msg.chat_id_, admins[i].user_id_)   
+redis:sadd(FoX..'Abs:Admins:'..msg.chat_id_, admins[i].user_id_)   
 num = num + 1
 tdcli_function ({ID = "GetUser",user_id_ = admins[i].user_id_},function(arg,dp) 
 if dp.first_name_ == false then
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_, admins[i].user_id_)   
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_, admins[i].user_id_)   
 end
 end,nil)   
 else
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_, admins[i].user_id_)   
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_, admins[i].user_id_)   
 end 
 if abbas.members_[i].status_.ID == "ChatMemberStatusCreator" then  
 Manager_id = admins[i].user_id_  
-redis:sadd(FoX..'BasicConstructor:Rd:'..msg.chat_id_,Manager_id)  
-redis:sadd(FoX..'Basic:Constructor:'..msg.chat_id_,Manager_id)   
+redis:sadd(FoX..'Abs:BasicConstructor:'..msg.chat_id_,Manager_id)  
+redis:sadd(FoX..'Abs:AbsConstructor:'..msg.chat_id_,Manager_id)   
 end  
 end  
 if num == 0 then
@@ -4381,7 +4391,7 @@ if tonumber(result.id_) == tonumber(218385683) then
 SendFoX(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج راسكك؟😏🖕🏿', 1, 'md') 
 return false  
 end  
-if redis:sismember(FoX.."Basic:Constructor:"..msg.chat_id_,result.id_) then
+if redis:sismember(FoX.."Abs:AbsConstructor:"..msg.chat_id_,result.id_) then
 SendFoX(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج راسكك؟😏🖕🏿', 1, 'md')
 return false
 end 
@@ -4412,7 +4422,7 @@ if tonumber(result.sender_user_id_) == tonumber(218385683) then
 SendFoX(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج راسكك؟😏🖕🏿', 1, 'md')
 return false
 end 
-if redis:sismember(FoX.."Basic:Constructor:"..msg.chat_id_,result.sender_user_id_) then
+if redis:sismember(FoX.."Abs:AbsConstructor:"..msg.chat_id_,result.sender_user_id_) then
 SendFoX(msg.chat_id_, msg.id_, 1, 'دي لكك تريد اهينن تاج راسكك؟😏🖕🏿', 1, 'md')
 return false
 end 
@@ -4500,7 +4510,7 @@ end
 --     Source FoX     --
 if text == ("تنزيل الكل") and msg.reply_to_message_id_ ~= 0 and Manager(msg) and ChCheck(msg) then 
 function promote_by_reply(extra, result, success)
-if SUDO(result.sender_user_id_) == true then
+if SudoId(result.sender_user_id_) == true then
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙لاتستطيع تنزيل المطور الاساسي", 1, 'md')
 return false 
 end
@@ -4514,15 +4524,15 @@ if redis:sismember(FoX..'Abs:AdminAll:',result.sender_user_id_) then
 adminall = 'الادمنيه العامين • ' else adminall = '' end
 if redis:sismember(FoX..'Abs:VipAll:',result.sender_user_id_) then
 vpall = 'المميزين العامين • ' else vpall = '' end
-if redis:sismember(FoX..'BasicConstructor:Rd:'..msg.chat_id_, result.sender_user_id_) then
+if redis:sismember(FoX..'Abs:BasicConstructor:'..msg.chat_id_, result.sender_user_id_) then
 basicconstructor = 'المنشئين الاساسيين • ' else basicconstructor = '' end
-if redis:sismember(FoX..'Constructor:Rd:'..msg.chat_id_, result.sender_user_id_) then
+if redis:sismember(FoX..'Abs:Constructor:'..msg.chat_id_, result.sender_user_id_) then
 constructor = 'المنشئين • ' else constructor = '' end 
-if redis:sismember(FoX..'Manager:Rd:'..msg.chat_id_, result.sender_user_id_) then
+if redis:sismember(FoX..'Abs:Managers:'..msg.chat_id_, result.sender_user_id_) then
 manager = 'المدراء • ' else manager = '' end
-if redis:sismember(FoX..'Mod:Rd:'..msg.chat_id_, result.sender_user_id_) then
+if redis:sismember(FoX..'Abs:Admins:'..msg.chat_id_, result.sender_user_id_) then
 admins = 'الادمنيه • ' else admins = '' end
-if redis:sismember(FoX..'Special:Rd:'..msg.chat_id_, result.sender_user_id_) then
+if redis:sismember(FoX..'Abs:VipMem:'..msg.chat_id_, result.sender_user_id_) then
 vipmem = 'المميزين • ' else vipmem = '' end
 if redis:sismember(FoX..'Abs:Cleaner:'..msg.chat_id_, result.sender_user_id_) then
 cleaner = 'المنظفين • ' else cleaner = ''
@@ -4532,60 +4542,60 @@ ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله من ↫
 else 
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙لم تتم ترقيته مسبقا")  
 end
-if AbsDelAll(msg.sender_user_id_,msg.chat_id_) == 'SUDO' then
+if AbsDelAll(msg.sender_user_id_,msg.chat_id_) == 'sudoid' then
 redis:srem(FoX..'Abs:SecondSudo:', result.sender_user_id_)
 redis:srem(FoX..'Abs:SudoBot:', result.sender_user_id_)
 redis:srem(FoX..'Abs:ManagerAll:', result.sender_user_id_)
 redis:srem(FoX..'Abs:AdminAll:', result.sender_user_id_)
 redis:srem(FoX..'Abs:VipAll:', result.sender_user_id_)
-redis:srem(FoX..'BasicConstructor:Rd:'..msg.chat_id_,result.sender_user_id_)
-redis:srem(FoX..'Constructor:Rd:'..msg.chat_id_,result.sender_user_id_)
-redis:srem(FoX..'Manager:Rd:'..msg.chat_id_, result.sender_user_id_)
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_, result.sender_user_id_)
-redis:srem(FoX..'Special:Rd:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:BasicConstructor:'..msg.chat_id_,result.sender_user_id_)
+redis:srem(FoX..'Abs:Constructor:'..msg.chat_id_,result.sender_user_id_)
+redis:srem(FoX..'Abs:Managers:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:VipMem:'..msg.chat_id_, result.sender_user_id_)
 redis:srem(FoX..'Abs:Cleaner:'..msg.chat_id_, result.sender_user_id_)
 elseif AbsDelAll(msg.sender_user_id_,msg.chat_id_) == 'secondsudo' then
 redis:srem(FoX..'Abs:SudoBot:', result.sender_user_id_)
 redis:srem(FoX..'Abs:ManagerAll:', result.sender_user_id_)
 redis:srem(FoX..'Abs:AdminAll:', result.sender_user_id_)
 redis:srem(FoX..'Abs:VipAll:', result.sender_user_id_)
-redis:srem(FoX..'BasicConstructor:Rd:'..msg.chat_id_,result.sender_user_id_)
-redis:srem(FoX..'Constructor:Rd:'..msg.chat_id_,result.sender_user_id_)
-redis:srem(FoX..'Manager:Rd:'..msg.chat_id_, result.sender_user_id_)
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_, result.sender_user_id_)
-redis:srem(FoX..'Special:Rd:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:BasicConstructor:'..msg.chat_id_,result.sender_user_id_)
+redis:srem(FoX..'Abs:Constructor:'..msg.chat_id_,result.sender_user_id_)
+redis:srem(FoX..'Abs:Managers:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:VipMem:'..msg.chat_id_, result.sender_user_id_)
 redis:srem(FoX..'Abs:Cleaner:'..msg.chat_id_, result.sender_user_id_)
 elseif AbsDelAll(msg.sender_user_id_,msg.chat_id_) == 'sudobot' then
 redis:srem(FoX..'Abs:ManagerAll:', result.sender_user_id_)
 redis:srem(FoX..'Abs:AdminAll:', result.sender_user_id_)
 redis:srem(FoX..'Abs:VipAll:', result.sender_user_id_)
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_, result.sender_user_id_)
-redis:srem(FoX..'Special:Rd:'..msg.chat_id_, result.sender_user_id_)
-redis:srem(FoX..'Manager:Rd:'..msg.chat_id_, result.sender_user_id_)
-redis:srem(FoX..'Constructor:Rd:'..msg.chat_id_,result.sender_user_id_)
-redis:srem(FoX..'BasicConstructor:Rd:'..msg.chat_id_,result.sender_user_id_)
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:VipMem:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:Managers:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:Constructor:'..msg.chat_id_,result.sender_user_id_)
+redis:srem(FoX..'Abs:BasicConstructor:'..msg.chat_id_,result.sender_user_id_)
 redis:srem(FoX..'Abs:Cleaner:'..msg.chat_id_, result.sender_user_id_)
 elseif AbsDelAll(msg.sender_user_id_,msg.chat_id_) == 'absconstructor' then
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_, result.sender_user_id_)
-redis:srem(FoX..'Special:Rd:'..msg.chat_id_, result.sender_user_id_)
-redis:srem(FoX..'Manager:Rd:'..msg.chat_id_, result.sender_user_id_)
-redis:srem(FoX..'Constructor:Rd:'..msg.chat_id_,result.sender_user_id_)
-redis:srem(FoX..'BasicConstructor:Rd:'..msg.chat_id_,result.sender_user_id_)
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:VipMem:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:Managers:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:Constructor:'..msg.chat_id_,result.sender_user_id_)
+redis:srem(FoX..'Abs:BasicConstructor:'..msg.chat_id_,result.sender_user_id_)
 redis:srem(FoX..'Abs:Cleaner:'..msg.chat_id_, result.sender_user_id_)
 elseif AbsDelAll(msg.sender_user_id_,msg.chat_id_) == 'basicconstructor' then
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_, result.sender_user_id_)
-redis:srem(FoX..'Special:Rd:'..msg.chat_id_, result.sender_user_id_)
-redis:srem(FoX..'Manager:Rd:'..msg.chat_id_, result.sender_user_id_)
-redis:srem(FoX..'Constructor:Rd:'..msg.chat_id_,result.sender_user_id_)
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:VipMem:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:Managers:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:Constructor:'..msg.chat_id_,result.sender_user_id_)
 redis:srem(FoX..'Abs:Cleaner:'..msg.chat_id_, result.sender_user_id_)
 elseif AbsDelAll(msg.sender_user_id_,msg.chat_id_) == 'constructor' then
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_, result.sender_user_id_)
-redis:srem(FoX..'Special:Rd:'..msg.chat_id_, result.sender_user_id_)
-redis:srem(FoX..'Manager:Rd:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:VipMem:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:Managers:'..msg.chat_id_, result.sender_user_id_)
 redis:srem(FoX..'Abs:Cleaner:'..msg.chat_id_, result.sender_user_id_)
 elseif AbsDelAll(msg.sender_user_id_,msg.chat_id_) == 'manager' then
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_, result.sender_user_id_)
-redis:srem(FoX..'Special:Rd:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_, result.sender_user_id_)
+redis:srem(FoX..'Abs:VipMem:'..msg.chat_id_, result.sender_user_id_)
 end
 end
 getMessage(msg.chat_id_, msg.reply_to_message_id_,promote_by_reply)
@@ -4594,7 +4604,7 @@ if text and text:match("^تنزيل الكل @(.*)$") and Manager(msg) and ChChe
 local rem = {string.match(text, "^(تنزيل الكل) @(.*)$")}
 function remm(extra, result, success)
 if result.id_ then
-if SUDO(result.id_) == true then
+if SudoId(result.id_) == true then
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙لاتستطيع تنزيل المطور الاساسي", 1, 'md')
 return false 
 end
@@ -4608,15 +4618,15 @@ if redis:sismember(FoX..'Abs:AdminAll:',result.id_) then
 adminall = 'الادمنيه العامين • ' else adminall = '' end
 if redis:sismember(FoX..'Abs:VipAll:',result.id_) then
 vpall = 'المميزين العامين • ' else vpall = '' end
-if redis:sismember(FoX..'BasicConstructor:Rd:'..msg.chat_id_, result.id_) then
+if redis:sismember(FoX..'Abs:BasicConstructor:'..msg.chat_id_, result.id_) then
 basicconstructor = 'المنشئين الاساسيين • ' else basicconstructor = '' end
-if redis:sismember(FoX..'Constructor:Rd:'..msg.chat_id_, result.id_) then
+if redis:sismember(FoX..'Abs:Constructor:'..msg.chat_id_, result.id_) then
 constructor = 'المنشئين • ' else constructor = '' end 
-if redis:sismember(FoX..'Manager:Rd:'..msg.chat_id_, result.id_) then
+if redis:sismember(FoX..'Abs:Managers:'..msg.chat_id_, result.id_) then
 manager = 'المدراء • ' else manager = '' end
-if redis:sismember(FoX..'Mod:Rd:'..msg.chat_id_, result.id_) then
+if redis:sismember(FoX..'Abs:Admins:'..msg.chat_id_, result.id_) then
 admins = 'الادمنيه • ' else admins = '' end
-if redis:sismember(FoX..'Special:Rd:'..msg.chat_id_, result.id_) then
+if redis:sismember(FoX..'Abs:VipMem:'..msg.chat_id_, result.id_) then
 vipmem = 'المميزين • ' else vipmem = '' end
 if redis:sismember(FoX..'Abs:Cleaner:'..msg.chat_id_, result.id_) then
 cleaner = 'المنظفين • ' else cleaner = ''
@@ -4626,59 +4636,59 @@ ReplyStatus(msg,result.id_,"Reply","⌁︙تم تنزيله من ↫ ⤈\n~ ( ".
 else 
 ReplyStatus(msg,result.id_,"Reply","⌁︙لم تتم ترقيته مسبقا")  
 end 
-if AbsDelAll(msg.sender_user_id_,msg.chat_id_) == 'SUDO' then
+if AbsDelAll(msg.sender_user_id_,msg.chat_id_) == 'sudoid' then
 redis:srem(FoX..'Abs:SecondSudo:', result.id_)
 redis:srem(FoX..'Abs:SudoBot:', result.id_)
 redis:srem(FoX..'Abs:ManagerAll:', result.id_)
 redis:srem(FoX..'Abs:AdminAll:', result.id_)
 redis:srem(FoX..'Abs:VipAll:', result.id_)
-redis:srem(FoX..'BasicConstructor:Rd:'..msg.chat_id_,result.id_)
-redis:srem(FoX..'Constructor:Rd:'..msg.chat_id_,result.id_)
-redis:srem(FoX..'Manager:Rd:'..msg.chat_id_, result.id_)
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_, result.id_)
-redis:srem(FoX..'Special:Rd:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:BasicConstructor:'..msg.chat_id_,result.id_)
+redis:srem(FoX..'Abs:Constructor:'..msg.chat_id_,result.id_)
+redis:srem(FoX..'Abs:Managers:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:VipMem:'..msg.chat_id_, result.id_)
 redis:srem(FoX..'Abs:Cleaner:'..msg.chat_id_, result.id_)
 elseif AbsDelAll(msg.sender_user_id_,msg.chat_id_) == 'secondsudo' then
 redis:srem(FoX..'Abs:SudoBot:', result.id_)
 redis:srem(FoX..'Abs:ManagerAll:', result.id_)
 redis:srem(FoX..'Abs:AdminAll:', result.id_)
 redis:srem(FoX..'Abs:VipAll:', result.id_)
-redis:srem(FoX..'BasicConstructor:Rd:'..msg.chat_id_,result.id_)
-redis:srem(FoX..'Constructor:Rd:'..msg.chat_id_,result.id_)
-redis:srem(FoX..'Manager:Rd:'..msg.chat_id_, result.id_)
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_, result.id_)
-redis:srem(FoX..'Special:Rd:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:BasicConstructor:'..msg.chat_id_,result.id_)
+redis:srem(FoX..'Abs:Constructor:'..msg.chat_id_,result.id_)
+redis:srem(FoX..'Abs:Managers:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:VipMem:'..msg.chat_id_, result.id_)
 redis:srem(FoX..'Abs:Cleaner:'..msg.chat_id_, result.id_)
 elseif AbsDelAll(msg.sender_user_id_,msg.chat_id_) == 'sudobot' then
 redis:srem(FoX..'Abs:ManagerAll:', result.id_)
 redis:srem(FoX..'Abs:AdminAll:', result.id_)
 redis:srem(FoX..'Abs:VipAll:', result.id_)
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_, result.id_)
-redis:srem(FoX..'Special:Rd:'..msg.chat_id_, result.id_)
-redis:srem(FoX..'Manager:Rd:'..msg.chat_id_, result.id_)
-redis:srem(FoX..'Constructor:Rd:'..msg.chat_id_,result.id_)
-redis:srem(FoX..'BasicConstructor:Rd:'..msg.chat_id_,result.id_)
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:VipMem:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:Managers:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:Constructor:'..msg.chat_id_,result.id_)
+redis:srem(FoX..'Abs:BasicConstructor:'..msg.chat_id_,result.id_)
 redis:srem(FoX..'Abs:Cleaner:'..msg.chat_id_, result.id_)
 elseif AbsDelAll(msg.sender_user_id_,msg.chat_id_) == 'absconstructor' then
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_, result.id_)
-redis:srem(FoX..'Special:Rd:'..msg.chat_id_, result.id_)
-redis:srem(FoX..'Manager:Rd:'..msg.chat_id_, result.id_)
-redis:srem(FoX..'Constructor:Rd:'..msg.chat_id_,result.id_)
-redis:srem(FoX..'BasicConstructor:Rd:'..msg.chat_id_,result.id_)
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:VipMem:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:Managers:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:Constructor:'..msg.chat_id_,result.id_)
+redis:srem(FoX..'Abs:BasicConstructor:'..msg.chat_id_,result.id_)
 redis:srem(FoX..'Abs:Cleaner:'..msg.chat_id_, result.id_)
 elseif AbsDelAll(msg.sender_user_id_,msg.chat_id_) == 'basicconstructor' then
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_, result.id_)
-redis:srem(FoX..'Special:Rd:'..msg.chat_id_, result.id_)
-redis:srem(FoX..'Manager:Rd:'..msg.chat_id_, result.id_)
-redis:srem(FoX..'Constructor:Rd:'..msg.chat_id_,result.id_)
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:VipMem:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:Managers:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:Constructor:'..msg.chat_id_,result.id_)
 redis:srem(FoX..'Abs:Cleaner:'..msg.chat_id_, result.id_)
 elseif AbsDelAll(msg.sender_user_id_,msg.chat_id_) == 'constructor' then
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_, result.id_)
-redis:srem(FoX..'Special:Rd:'..msg.chat_id_, result.id_)
-redis:srem(FoX..'Manager:Rd:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:VipMem:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:Managers:'..msg.chat_id_, result.id_)
 elseif AbsDelAll(msg.sender_user_id_,msg.chat_id_) == 'manager' then
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_, result.id_)
-redis:srem(FoX..'Special:Rd:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_, result.id_)
+redis:srem(FoX..'Abs:VipMem:'..msg.chat_id_, result.id_)
 end
 else
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙المعرف غير صحيح*', 1, 'md')
@@ -4957,7 +4967,7 @@ if ChatType == 'sp' or ChatType == 'gp'  then
 if SudoBot(msg) then
 if text ==('رفع مالك') and SourceCh(msg) then
 function raf_reply(extra, result, success)
-redis:sadd(FoX..'Basic:Constructor:'..msg.chat_id_,result.sender_user_id_)
+redis:sadd(FoX..'Abs:AbsConstructor:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفعه مالك")  
 end 
 if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
@@ -4967,7 +4977,7 @@ if text and text:match('^رفع مالك @(.*)') and SourceCh(msg) then
 local username = text:match('^رفع مالك @(.*)')
 function promreply(extra,result,success)
 if result.id_ then
-redis:sadd(FoX..'Basic:Constructor:'..msg.chat_id_,result.id_)
+redis:sadd(FoX..'Abs:AbsConstructor:'..msg.chat_id_,result.id_)
 ReplyStatus(msg,result.id_,"Reply","⌁︙تم رفعه مالك")  
 else 
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙*المعرف غير صحيح*', 1, 'md')
@@ -4976,7 +4986,7 @@ resolve_username(username,promreply)
 end
 if text and text:match('^رفع مالك (%d+)') and SourceCh(msg) then
 local user = text:match('رفع مالك (%d+)')
-redis:sadd(FoX..'Basic:Constructor:'..msg.chat_id_,user)
+redis:sadd(FoX..'Abs:AbsConstructor:'..msg.chat_id_,user)
 ReplyStatus(msg,user,"Reply","⌁︙تم رفعه مالك")  
 end
 --     Source FoX     --
@@ -4990,7 +5000,7 @@ if data.members_[i].status_.ID == "ChatMemberStatusCreator" then
 if tonumber(result.sender_user_id_) == tonumber(admins[i].user_id_) then  
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙لا يمكن تنزيل المالك الاساسي', 1, 'md')
 else
-redis:srem(FoX..'Basic:Constructor:'..msg.chat_id_,result.sender_user_id_)
+redis:srem(FoX..'Abs:AbsConstructor:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله من المالكين")  
 end end end
 end,nil)
@@ -5010,7 +5020,7 @@ if data.members_[i].status_.ID == "ChatMemberStatusCreator" then
 if tonumber(result.id_) == tonumber(admins[i].user_id_) then  
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙لا يمكن تنزيل المالك الاساسي', 1, 'md')
 else
-redis:srem(FoX..'Basic:Constructor:'..msg.chat_id_,result.id_)
+redis:srem(FoX..'Abs:AbsConstructor:'..msg.chat_id_,result.id_)
 ReplyStatus(msg,result.id_,"Reply","⌁︙تم تنزيله من المالكين")  
 end end end
 end,nil)
@@ -5028,7 +5038,7 @@ if data.members_[i].status_.ID == "ChatMemberStatusCreator" then
 if tonumber(user) == tonumber(admins[i].user_id_) then  
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙لا يمكن تنزيل المالك الاساسي', 1, 'md')
 else
-redis:srem(FoX..'Basic:Constructor:'..msg.chat_id_,user)
+redis:srem(FoX..'Abs:AbsConstructor:'..msg.chat_id_,user)
 ReplyStatus(msg,user,"Reply","⌁︙تم تنزيله من المالكين")  
 end end end
 end,nil)
@@ -5038,7 +5048,7 @@ end end
 if AbsConstructor(msg) then
 if text ==('رفع منشئ اساسي') and SourceCh(msg) then
 function raf_reply(extra, result, success)
-redis:sadd(FoX..'BasicConstructor:Rd:'..msg.chat_id_,result.sender_user_id_)
+redis:sadd(FoX..'Abs:BasicConstructor:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفعه منشئ اساسي")  
 end 
 if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
@@ -5048,7 +5058,7 @@ if text and text:match('^رفع منشئ اساسي @(.*)') and SourceCh(msg) th
 local username = text:match('^رفع منشئ اساسي @(.*)')
 function promreply(extra,result,success)
 if result.id_ then
-redis:sadd(FoX..'BasicConstructor:Rd:'..msg.chat_id_,result.id_)
+redis:sadd(FoX..'Abs:BasicConstructor:'..msg.chat_id_,result.id_)
 ReplyStatus(msg,result.id_,"Reply","⌁︙تم رفعه منشئ اساسي")  
 else 
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙*المعرف غير صحيح*', 1, 'md')
@@ -5057,14 +5067,14 @@ resolve_username(username,promreply)
 end
 if text and text:match('^رفع منشئ اساسي (%d+)') and SourceCh(msg) then
 local user = text:match('رفع منشئ اساسي (%d+)')
-redis:sadd(FoX..'BasicConstructor:Rd:'..msg.chat_id_,user)
+redis:sadd(FoX..'Abs:BasicConstructor:'..msg.chat_id_,user)
 ReplyStatus(msg,user,"Reply","⌁︙تم رفعه منشئ اساسي")  
 end
 --     Source FoX     --
 --  Rem BasicConstructor  --
 if text ==('تنزيل منشئ اساسي') and SourceCh(msg) then
 function prom_reply(extra, result, success)
-redis:srem(FoX..'BasicConstructor:Rd:'..msg.chat_id_,result.sender_user_id_)
+redis:srem(FoX..'Abs:BasicConstructor:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله منشئ اساسي")  
 end 
 if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
@@ -5074,7 +5084,7 @@ if text and text:match('^تنزيل منشئ اساسي @(.*)') and SourceCh(msg
 local username = text:match('^تنزيل منشئ اساسي @(.*)')
 function promreply(extra,result,success)
 if result.id_ then
-redis:srem(FoX..'BasicConstructor:Rd:'..msg.chat_id_,result.id_)
+redis:srem(FoX..'Abs:BasicConstructor:'..msg.chat_id_,result.id_)
 ReplyStatus(msg,result.id_,"Reply","⌁︙تم تنزيله منشئ اساسي")  
 else 
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙*المعرف غير صحيح*', 1, 'md')
@@ -5083,7 +5093,7 @@ resolve_username(username,promreply)
 end
 if text and text:match('^تنزيل منشئ اساسي (%d+)') and SourceCh(msg) then
 local user = text:match('تنزيل منشئ اساسي (%d+)')
-redis:srem(FoX..'BasicConstructor:Rd:'..msg.chat_id_,user)
+redis:srem(FoX..'Abs:BasicConstructor:'..msg.chat_id_,user)
 ReplyStatus(msg,user,"Reply","⌁︙تم تنزيله منشئ اساسي")  
 end end
 if text ==('رفع منشئ اساسي') and not AbsConstructor(msg) then
@@ -5094,7 +5104,7 @@ end
 if BasicConstructor(msg) then
 if text ==('رفع منشئ') and SourceCh(msg) then
 function raf_reply(extra, result, success)
-redis:sadd(FoX..'Constructor:Rd:'..msg.chat_id_,result.sender_user_id_)
+redis:sadd(FoX..'Abs:Constructor:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفعه في قائمة المنشئين")  
 end 
 if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
@@ -5104,7 +5114,7 @@ if text and text:match('^رفع منشئ @(.*)') and SourceCh(msg) then
 local username = text:match('^رفع منشئ @(.*)')
 function promreply(extra,result,success)
 if result.id_ then
-redis:sadd(FoX..'Constructor:Rd:'..msg.chat_id_,result.id_)
+redis:sadd(FoX..'Abs:Constructor:'..msg.chat_id_,result.id_)
 ReplyStatus(msg,result.id_,"Reply","⌁︙تم رفعه في قائمة المنشئين")  
 else 
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙*المعرف غير صحيح*', 1, 'md')
@@ -5113,14 +5123,14 @@ resolve_username(username,promreply)
 end
 if text and text:match('^رفع منشئ (%d+)') and SourceCh(msg) then
 local user = text:match('رفع منشئ (%d+)')
-redis:sadd(FoX..'Constructor:Rd:'..msg.chat_id_,user)
+redis:sadd(FoX..'Abs:Constructor:'..msg.chat_id_,user)
 ReplyStatus(msg,user,"Reply","⌁︙تم رفعه في قائمة المنشئين")  
 end
 --     Source FoX     --
 --    Rem  Constructor    --
 if text ==('تنزيل منشئ') and SourceCh(msg) then
 function prom_reply(extra, result, success)
-redis:srem(FoX..'Constructor:Rd:'..msg.chat_id_,result.sender_user_id_)
+redis:srem(FoX..'Abs:Constructor:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله من قائمة المنشئين")  
 end 
 if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
@@ -5130,7 +5140,7 @@ if text and text:match('^تنزيل منشئ @(.*)') and SourceCh(msg) then
 local username = text:match('^تنزيل منشئ @(.*)')
 function promreply(extra,result,success)
 if result.id_ then
-redis:srem(FoX..'Constructor:Rd:'..msg.chat_id_,result.id_)
+redis:srem(FoX..'Abs:Constructor:'..msg.chat_id_,result.id_)
 ReplyStatus(msg,result.id_,"Reply","⌁︙تم تنزيله من قائمة المنشئين")  
 else 
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙*المعرف غير صحيح*', 1, 'md')
@@ -5139,7 +5149,7 @@ resolve_username(username,promreply)
 end
 if text and text:match('^تنزيل منشئ (%d+)') and SourceCh(msg) then
 local user = text:match('تنزيل منشئ (%d+)')
-redis:srem(FoX..'Constructor:Rd:'..msg.chat_id_,user)
+redis:srem(FoX..'Abs:Constructor:'..msg.chat_id_,user)
 ReplyStatus(msg,user,"Reply","⌁︙تم تنزيله من قائمة المنشئين")  
 end 
 end
@@ -5148,7 +5158,7 @@ end
 if Constructor(msg) then
 if text ==('رفع مدير') and SourceCh(msg) then
 function prom_reply(extra, result, success)
-redis:sadd(FoX..'Manager:Rd:'..msg.chat_id_,result.sender_user_id_)
+redis:sadd(FoX..'Abs:Managers:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفعه في قائمة المدراء")  
 end  
 if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
@@ -5158,7 +5168,7 @@ if text and text:match('^رفع مدير @(.*)') and SourceCh(msg) then
 local username = text:match('^رفع مدير @(.*)')
 function promreply(extra,result,success)
 if result.id_ then
-redis:sadd(FoX..'Manager:Rd:'..msg.chat_id_,result.id_)
+redis:sadd(FoX..'Abs:Managers:'..msg.chat_id_,result.id_)
 ReplyStatus(msg,result.id_,"Reply","⌁︙تم رفعه في قائمة المدراء")  
 else 
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙*المعرف غير صحيح*', 1, 'md')
@@ -5167,14 +5177,14 @@ resolve_username(username,promreply)
 end 
 if text and text:match('^رفع مدير (%d+)') and SourceCh(msg) then
 local user = text:match('رفع مدير (%d+)')
-redis:sadd(FoX..'Manager:Rd:'..msg.chat_id_,user)
+redis:sadd(FoX..'Abs:Managers:'..msg.chat_id_,user)
 ReplyStatus(msg,user,"Reply","⌁︙تم رفعه في قائمة المدراء")  
 end
 --     Source FoX     --
 --       Rem Manager      --
 if text ==('تنزيل مدير') and SourceCh(msg) then
 function prom_reply(extra, result, success)
-redis:srem(FoX..'Manager:Rd:'..msg.chat_id_,result.sender_user_id_)
+redis:srem(FoX..'Abs:Managers:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله من قائمة المدراء")  
 end 
 if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
@@ -5184,7 +5194,7 @@ if text and text:match('^تنزيل مدير @(.*)') and SourceCh(msg) then
 local username = text:match('^تنزيل مدير @(.*)')
 function promreply(extra,result,success)
 if result.id_ then
-redis:srem(FoX..'Manager:Rd:'..msg.chat_id_,result.id_)
+redis:srem(FoX..'Abs:Managers:'..msg.chat_id_,result.id_)
 ReplyStatus(msg,result.id_,"Reply","⌁︙تم تنزيله من قائمة المدراء")  
 else 
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙*المعرف غير صحيح*', 1, 'md')
@@ -5193,7 +5203,7 @@ resolve_username(username,promreply)
 end
 if text and text:match('^تنزيل مدير (%d+)') and SourceCh(msg) then
 local user = text:match('تنزيل مدير (%d+)')
-redis:srem(FoX..'Manager:Rd:'..msg.chat_id_,user)
+redis:srem(FoX..'Abs:Managers:'..msg.chat_id_,user)
 ReplyStatus(msg,user,"Reply","⌁︙تم تنزيله من قائمة المدراء")  
 end 
 --     Source FoX     --
@@ -5257,7 +5267,7 @@ if not BasicConstructor(msg) and redis:get(FoX.."Abs:Lock:ProSet"..msg.chat_id_)
 SendFoX(msg.chat_id_, msg.id_, 1,'⌁︙لاتستطيع رفع احد وذالك بسبب تعطيل الرفع من قبل المنشئيين', 1, 'md')
 return false
 end
-redis:sadd(FoX..'Mod:Rd:'..msg.chat_id_,result.sender_user_id_)
+redis:sadd(FoX..'Abs:Admins:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفعه في قائمة الادمنيه")  
 end 
 if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
@@ -5271,7 +5281,7 @@ SendFoX(msg.chat_id_, msg.id_, 1,'⌁︙لاتستطيع رفع احد وذال�
 return false
 end
 if result.id_ then
-redis:sadd(FoX..'Mod:Rd:'..msg.chat_id_,result.id_)
+redis:sadd(FoX..'Abs:Admins:'..msg.chat_id_,result.id_)
 ReplyStatus(msg,result.id_,"Reply","⌁︙تم رفعه في قائمة الادمنيه")  
 else 
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙*المعرف غير صحيح*', 1, 'md')
@@ -5284,14 +5294,14 @@ if not BasicConstructor(msg) and redis:get(FoX.."Abs:Lock:ProSet"..msg.chat_id_)
 SendFoX(msg.chat_id_, msg.id_, 1,'⌁︙لاتستطيع رفع احد وذالك بسبب تعطيل الرفع من قبل المنشئيين', 1, 'md')
 return false
 end
-redis:sadd(FoX..'Mod:Rd:'..msg.chat_id_,user)
+redis:sadd(FoX..'Abs:Admins:'..msg.chat_id_,user)
 ReplyStatus(msg,user,"Reply","⌁︙تم رفعه في قائمة الادمنيه")  
 end
 --     Source FoX     --
 --        Rem admin       --
 if text ==('تنزيل ادمن') and SourceCh(msg) then
 function prom_reply(extra, result, success)
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_,result.sender_user_id_)
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله من قائمة الادمنيه")  
 end 
 if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
@@ -5301,7 +5311,7 @@ if text and text:match('^تنزيل ادمن @(.*)') and SourceCh(msg) then
 local username = text:match('^تنزيل ادمن @(.*)')
 function promreply(extra,result,success)
 if result.id_ then
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_,result.id_)
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_,result.id_)
 ReplyStatus(msg,result.id_,"Reply","⌁︙تم تنزيله من قائمة الادمنيه")  
 else 
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙*المعرف غير صحيح*', 1, 'md')
@@ -5310,7 +5320,7 @@ resolve_username(username,promreply)
 end
 if text and text:match('^تنزيل ادمن (%d+)') and SourceCh(msg) then
 local user = text:match('تنزيل ادمن (%d+)')
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_,user)
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_,user)
 ReplyStatus(msg,user,"Reply","⌁︙تم تنزيله من قائمة الادمنيه")  
 end end
 --     Source FoX     --
@@ -5322,7 +5332,7 @@ if not BasicConstructor(msg) and redis:get(FoX.."Abs:Lock:ProSet"..msg.chat_id_)
 SendFoX(msg.chat_id_, msg.id_, 1,'⌁︙لاتستطيع رفع احد وذالك بسبب تعطيل الرفع من قبل المنشئيين', 1, 'md')
 return false
 end
-redis:sadd(FoX..'Special:Rd:'..msg.chat_id_,result.sender_user_id_)
+redis:sadd(FoX..'Abs:VipMem:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم رفعه في قائمة المميزين")  
 end 
 if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
@@ -5336,7 +5346,7 @@ SendFoX(msg.chat_id_, msg.id_, 1,'⌁︙لاتستطيع رفع احد وذال�
 return false
 end
 if result.id_ then
-redis:sadd(FoX..'Special:Rd:'..msg.chat_id_,result.id_)
+redis:sadd(FoX..'Abs:VipMem:'..msg.chat_id_,result.id_)
 ReplyStatus(msg,result.id_,"Reply","⌁︙تم رفعه في قائمة المميزين")  
 else 
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙*المعرف غير صحيح*', 1, 'md')
@@ -5349,14 +5359,14 @@ if not BasicConstructor(msg) and redis:get(FoX.."Abs:Lock:ProSet"..msg.chat_id_)
 SendFoX(msg.chat_id_, msg.id_, 1,'⌁︙لاتستطيع رفع احد وذالك بسبب تعطيل الرفع من قبل المنشئيين', 1, 'md')
 return false
 end
-redis:sadd(FoX..'Special:Rd:'..msg.chat_id_,user)
+redis:sadd(FoX..'Abs:VipMem:'..msg.chat_id_,user)
 ReplyStatus(msg,user,"Reply","⌁︙تم رفعه في قائمة المميزين")  
 end
 --     Source FoX     --
 --       Rem Vipmem       --
 if text ==('تنزيل مميز') and SourceCh(msg) then
 function prom_reply(extra, result, success)
-redis:srem(FoX..'Special:Rd:'..msg.chat_id_,result.sender_user_id_)
+redis:srem(FoX..'Abs:VipMem:'..msg.chat_id_,result.sender_user_id_)
 ReplyStatus(msg,result.sender_user_id_,"Reply","⌁︙تم تنزيله من قائمة المميزين")  
 end 
 if tonumber(tonumber(msg.reply_to_message_id_)) > 0 then
@@ -5366,7 +5376,7 @@ if text and text:match('^تنزيل مميز @(.*)') and SourceCh(msg) then
 local username = text:match('^تنزيل مميز @(.*)')
 function promreply(extra,result,success)
 if result.id_ then
-redis:srem(FoX..'Special:Rd:'..msg.chat_id_,result.id_)
+redis:srem(FoX..'Abs:VipMem:'..msg.chat_id_,result.id_)
 ReplyStatus(msg,result.id_,"Reply","⌁︙تم تنزيله من قائمة المميزين")  
 else 
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙*المعرف غير صحيح*', 1, 'md')
@@ -5375,7 +5385,7 @@ resolve_username(username,promreply)
 end
 if text and text:match('^تنزيل مميز (%d+)') and SourceCh(msg) then
 local user = text:match('تنزيل مميز (%d+)')
-redis:srem(FoX..'Special:Rd:'..msg.chat_id_,user)
+redis:srem(FoX..'Abs:VipMem:'..msg.chat_id_,user)
 ReplyStatus(msg,user,"Reply","⌁︙تم تنزيله من قائمة المميزين")  
 end end 
 --     Source FoX     --
@@ -5922,7 +5932,7 @@ if tonumber(result.sender_user_id_) == tonumber(FoX) then
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع حظر البوت عام*", 1, 'md')
 return false 
 end
-if SUDO(result.sender_user_id_) == true then
+if SudoId(result.sender_user_id_) == true then
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع حظر المطور الاساسي*", 1, 'md')
 return false 
 end
@@ -5944,7 +5954,7 @@ if tonumber(result.id_) == tonumber(FoX) then
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع حظر البوت عام*", 1, 'md')
 return false 
 end
-if SUDO(result.id_) == true then
+if SudoId(result.id_) == true then
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع حظر المطور الاساسي*", 1, 'md')
 return false 
 end
@@ -5967,7 +5977,7 @@ if tonumber(user) == tonumber(FoX) then
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع حظر البوت عام*", 1, 'md')
 return false 
 end
-if SUDO(tonumber(user)) == true then
+if SudoId(tonumber(user)) == true then
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع حظر المطور الاساسي*", 1, 'md')
 return false 
 end
@@ -5987,7 +5997,7 @@ if tonumber(result.sender_user_id_) == tonumber(FoX) then
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع كتم البوت عام*", 1, 'md')
 return false 
 end
-if SUDO(result.sender_user_id_) == true then
+if SudoId(result.sender_user_id_) == true then
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع كتم المطور الاساسي*", 1, 'md')
 return false 
 end
@@ -6008,7 +6018,7 @@ if tonumber(result.id_) == tonumber(FoX) then
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع كتم البوت عام*", 1, 'md')
 return false 
 end
-if SUDO(result.id_) == true then
+if SudoId(result.id_) == true then
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع كتم المطور الاساسي*", 1, 'md')
 return false 
 end
@@ -6030,7 +6040,7 @@ if tonumber(user) == tonumber(FoX) then
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع كتم البوت عام*", 1, 'md')
 return false 
 end
-if SUDO(tonumber(user)) == true then
+if SudoId(tonumber(user)) == true then
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙*لاتستطيع كتم المطور الاساسي*", 1, 'md')
 return false 
 end
@@ -6244,7 +6254,7 @@ end
 --     Source FoX     --
 if Admin(msg) then
 if text == "المميزين" and ChCheck(msg) then 
-local List = redis:smembers(FoX..'Special:Rd:'..msg.chat_id_)
+local List = redis:smembers(FoX..'Abs:VipMem:'..msg.chat_id_)
 text = "⌁︙قائمة المميزين ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"
 for k,v in pairs(List) do
 local username = redis:get(FoX..'Save:UserName'..v)
@@ -6261,7 +6271,7 @@ end end
 --     Source FoX     --
 if Manager(msg) then
 if text == "الادمنيه" and ChCheck(msg) or text == "الادمنية" and ChCheck(msg) then 
-local abs =  'Mod:Rd:'..msg.chat_id_
+local abs =  'Abs:Admins:'..msg.chat_id_
 local List = redis:smembers(FoX..abs)
 text = "⌁︙قائمة الادمنيه ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"
 for k,v in pairs(List) do
@@ -6279,7 +6289,7 @@ end end
 --     Source FoX     -- 
 if Constructor(msg) then
 if text == "المدراء" and ChCheck(msg) or text == "مدراء" and ChCheck(msg) then 
-local List = redis:smembers(FoX..'Manager:Rd:'..msg.chat_id_)
+local List = redis:smembers(FoX..'Abs:Managers:'..msg.chat_id_)
 text = "⌁︙قائمة المدراء ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"
 for k,v in pairs(List) do
 local username = redis:get(FoX..'Save:UserName'..v)
@@ -6311,7 +6321,7 @@ end end
 --     Source FoX     --
 if BasicConstructor(msg) then
 if text == "المنشئين" and ChCheck(msg) then 
-local List = redis:smembers(FoX..'Constructor:Rd:'..msg.chat_id_)
+local List = redis:smembers(FoX..'Abs:Constructor:'..msg.chat_id_)
 text = "⌁︙قائمة المنشئين ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"
 for k,v in pairs(List) do
 local username = redis:get(FoX..'Save:UserName'..v)
@@ -6328,7 +6338,7 @@ end end
 --     Source FoX     --
 if AbsConstructor(msg) then
 if text == "المالكين" and ChCheck(msg) then 
-local List = redis:smembers(FoX..'Basic:Constructor:'..msg.chat_id_)
+local List = redis:smembers(FoX..'Abs:AbsConstructor:'..msg.chat_id_)
 text = "⌁︙قائمة المالكين ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"
 for k,v in pairs(List) do
 local username = redis:get(FoX..'Save:UserName'..v)
@@ -6343,7 +6353,7 @@ end
 SendFoX(msg.chat_id_, msg.id_, 1, text, 1, "md")
 end 
 if text == "المنشئين الاساسيين" and ChCheck(msg) or text == "منشئين اساسيين" and ChCheck(msg) or text == "المنشئين الاساسين" and ChCheck(msg) then 
-local List = redis:smembers(FoX..'BasicConstructor:Rd:'..msg.chat_id_)
+local List = redis:smembers(FoX..'Abs:BasicConstructor:'..msg.chat_id_)
 text = "⌁︙قائمة المنشئين الاساسيين ↫ ⤈ \n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"
 for k,v in pairs(List) do
 local username = redis:get(FoX..'Save:UserName'..v)
@@ -6587,7 +6597,7 @@ return false
 end
 local UserName = (dp.username_ or "Dev_Prox")
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙تم رفع مالك المجموعه ↫ ["..dp.first_name_.."](T.me/"..UserName..")", 1, "md") 
-redis:sadd(FoX.."Basic:Constructor:"..msg.chat_id_,dp.id_)
+redis:sadd(FoX.."Abs:AbsConstructor:"..msg.chat_id_,dp.id_)
 end,nil)   
 end,nil)   
 end
@@ -8179,32 +8189,32 @@ SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙صلاحيات البوت هي ↫ ⤈\
 end end
 if text and text:match("^تغير رد المطور (.*)$") then
 local Text = text:match("^تغير رد المطور (.*)$") 
-redis:set(FoX.."Sudo:Rd"..msg.chat_id_,Text)
+redis:set(FoX.."Abs:SudoBot:Rd"..msg.chat_id_,Text)
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙تم تغير رد المطور الى ↫ "..Text, 1, 'md')
 end
 if text and text:match("^تغير رد منشئ الاساسي (.*)$") then
 local Text = text:match("^تغير رد منشئ الاساسي (.*)$") 
-redis:set(FoX.."BasicConstructor:Rd"..msg.chat_id_,Text)
+redis:set(FoX.."Abs:BasicConstructor:Rd"..msg.chat_id_,Text)
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙تم تغير رد المنشئ الاساسي الى ↫ "..Text, 1, 'md')
 end
 if text and text:match("^تغير رد المنشئ (.*)$") then
 local Text = text:match("^تغير رد المنشئ (.*)$") 
-redis:set(FoX.."Constructor:Rd"..msg.chat_id_,Text)
+redis:set(FoX.."Abs:Constructor:Rd"..msg.chat_id_,Text)
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙تم تغير رد المنشئ الى ↫ "..Text, 1, 'md')
 end
 if text and text:match("^تغير رد المدير (.*)$") then
 local Text = text:match("^تغير رد المدير (.*)$") 
-redis:set(FoX.."Manager:Rd"..msg.chat_id_,Text) 
+redis:set(FoX.."Abs:Managers:Rd"..msg.chat_id_,Text) 
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙تم تغير رد المدير الى ↫ "..Text, 1, 'md')
 end
 if text and text:match("^تغير رد الادمن (.*)$") then
 local Text = text:match("^تغير رد الادمن (.*)$") 
-redis:set(FoX.."Mod:Rd"..msg.chat_id_,Text)
+redis:set(FoX.."Abs:Admins:Rd"..msg.chat_id_,Text)
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙تم تغير رد الادمن الى ↫ "..Text, 1, 'md')
 end
 if text and text:match("^تغير رد المميز (.*)$") then
 local Text = text:match("^تغير رد المميز (.*)$") 
-redis:set(FoX.."Special:Rd"..msg.chat_id_,Text)
+redis:set(FoX.."Abs:VipMem:Rd"..msg.chat_id_,Text)
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙تم تغير رد المميز الى ↫ "..Text, 1, 'md')
 end
 if text and text:match("^تغير رد المنظف (.*)$") then
@@ -8214,19 +8224,19 @@ SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙تم تغير رد المنظف الى 
 end
 if text and text:match("^تغير رد العضو (.*)$") then
 local Text = text:match("^تغير رد العضو (.*)$") 
-redis:set(FoX.."Memp:Rd"..msg.chat_id_,Text)
+redis:set(FoX.."Abs:mem:Rd"..msg.chat_id_,Text)
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙تم تغير رد العضو الى ↫ "..Text, 1, 'md')
 end
 if text == "حذف ردود الرتب" or text == "مسح ردود الرتب" then
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙تم حذف جميع ردود الرتب", 1, 'md')
-redis:del(FoX.."Memp:Rd"..msg.chat_id_)
+redis:del(FoX.."Abs:mem:Rd"..msg.chat_id_)
 redis:del(FoX.."Abs:Cleaner:Rd"..msg.chat_id_)
-redis:del(FoX.."Special:Rd"..msg.chat_id_)
-redis:del(FoX.."Mod:Rd"..msg.chat_id_)
-redis:del(FoX.."Manager:Rd"..msg.chat_id_)
-redis:del(FoX.."Constructor:Rd"..msg.chat_id_)
-redis:del(FoX.."BasicConstructor:Rd"..msg.chat_id_)
-redis:del(FoX.."Sudo:Rd"..msg.chat_id_)
+redis:del(FoX.."Abs:VipMem:Rd"..msg.chat_id_)
+redis:del(FoX.."Abs:Admins:Rd"..msg.chat_id_)
+redis:del(FoX.."Abs:Managers:Rd"..msg.chat_id_)
+redis:del(FoX.."Abs:Constructor:Rd"..msg.chat_id_)
+redis:del(FoX.."Abs:BasicConstructor:Rd"..msg.chat_id_)
+redis:del(FoX.."Abs:SudoBot:Rd"..msg.chat_id_)
 end
 end
 --     Source FoX     --
@@ -8318,12 +8328,12 @@ ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم حذف المدراء 
 redis:del(FoX..'Abs:ManagerAll:')
 end
 if txts[2] == 'المالكين' or txtss[2] == 'المالكين' then
-redis:del(FoX..'Basic:Constructor:'..msg.chat_id_)
+redis:del(FoX..'Abs:AbsConstructor:'..msg.chat_id_)
 tdcli_function ({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100",""),filter_ = {ID = "ChannelMembersAdministrators"},offset_ = 0,limit_ = 100},function(arg,dp) 
 local admins = dp.members_
 for i=0 , #admins do
 if dp.members_[i].status_.ID == "ChatMemberStatusCreator" then
-redis:sadd(FoX.."Basic:Constructor:"..msg.chat_id_,admins[i].user_id_)
+redis:sadd(FoX.."Abs:AbsConstructor:"..msg.chat_id_,admins[i].user_id_)
 end 
 end  
 end,nil)
@@ -8333,18 +8343,18 @@ end
 if AbsConstructor(msg) then
 if txts[2] == 'المنشئين الاساسيين' or txtss[2] == 'المنشئين الاساسيين' then
 ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم حذف المنشئين الاساسيين")  
-redis:del(FoX..'BasicConstructor:Rd:'..msg.chat_id_)
+redis:del(FoX..'Abs:BasicConstructor:'..msg.chat_id_)
 end
 end
 if BasicConstructor(msg) then
 if txts[2] == 'المنشئين' or txtss[2] == 'المنشئين' then
 ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم حذف المنشئين")  
-redis:del(FoX..'Constructor:Rd:'..msg.chat_id_)
+redis:del(FoX..'Abs:Constructor:'..msg.chat_id_)
 end end
 if Constructor(msg) then
 if txts[2] == 'المدراء' or txtss[2] == 'المدراء' then
 ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم حذف المدراء")  
-redis:del(FoX..'Manager:Rd:'..msg.chat_id_)
+redis:del(FoX..'Abs:Managers:'..msg.chat_id_)
 end 
 if txts[2] == 'المنظفين' or txtss[2] == 'المنظفين' then
 ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم حذف المنظفين")  
@@ -8353,7 +8363,7 @@ end end
 if Manager(msg) then
 if txts[2] == 'الادمنيه' or txtss[2] == 'الادمنيه' then
 ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم حذف الادمنيه")  
-redis:del(FoX..'Mod:Rd:'..msg.chat_id_)
+redis:del(FoX..'Abs:Admins:'..msg.chat_id_)
 end
 end
 if txts[2] == 'قوانين' or txtss[2] == 'قوانين' then
@@ -8370,7 +8380,7 @@ redis:del(FoX.."Abs:Groups:Links"..msg.chat_id_)
 end
 if txts[2] == 'المميزين' or txtss[2] == 'المميزين' then
 ReplyStatus(msg,msg.sender_user_id_,"ReplyBy","⌁︙تم حذف المميزين")  
-redis:del(FoX..'Special:Rd:'..msg.chat_id_)
+redis:del(FoX..'Abs:VipMem:'..msg.chat_id_)
 end
 if txts[2] == 'المكتومين' or txtss[2] == 'المكتومين' then
 redis:del(FoX..'Abs:Muted:'..msg.chat_id_)
@@ -8414,7 +8424,7 @@ if text and text:match("^حذف القوائم$") and ChCheck(msg) or text and t
 if not BasicConstructor(msg) then
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙للمنشئ الاساسي فقط', 1, 'md')
 else
-redis:del(FoX..'Abs:Ban:'..msg.chat_id_) redis:del(FoX..'Mod:Rd:'..msg.chat_id_) redis:del(FoX..'User:Donky:'..msg.chat_id_) redis:del(FoX..'Special:Rd:'..msg.chat_id_) redis:del(FoX..'Abs:Filters:'..msg.chat_id_) redis:del(FoX..'Abs:Muted:'..msg.chat_id_)
+redis:del(FoX..'Abs:Ban:'..msg.chat_id_) redis:del(FoX..'Abs:Admins:'..msg.chat_id_) redis:del(FoX..'User:Donky:'..msg.chat_id_) redis:del(FoX..'Abs:VipMem:'..msg.chat_id_) redis:del(FoX..'Abs:Filters:'..msg.chat_id_) redis:del(FoX..'Abs:Muted:'..msg.chat_id_)
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙تم حذف ↫ ❨ قائمة المنع • المحظورين • المكتومين • الادمنيه • المميزين • المطايه ❩ بنجاح \n ✓", 1, 'md')
 end end
 --     Source FoX     --
@@ -8422,11 +8432,11 @@ if text and text:match("^حذف جميع الرتب$") and ChCheck(msg) or text 
 if not AbsConstructor(msg) then
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙للمالكين فقط', 1, 'md')
 else
-local basicconstructor = redis:smembers(FoX..'BasicConstructor:Rd:'..msg.chat_id_)
-local constructor = redis:smembers(FoX..'Constructor:Rd:'..msg.chat_id_)
-local Managers = redis:smembers(FoX..'Manager:Rd:'..msg.chat_id_)
-local admins = redis:smembers(FoX..'Mod:Rd:'..msg.chat_id_)
-local vipmem = redis:smembers(FoX..'Special:Rd:'..msg.chat_id_)
+local basicconstructor = redis:smembers(FoX..'Abs:BasicConstructor:'..msg.chat_id_)
+local constructor = redis:smembers(FoX..'Abs:Constructor:'..msg.chat_id_)
+local Managers = redis:smembers(FoX..'Abs:Managers:'..msg.chat_id_)
+local admins = redis:smembers(FoX..'Abs:Admins:'..msg.chat_id_)
+local vipmem = redis:smembers(FoX..'Abs:VipMem:'..msg.chat_id_)
 local donky = redis:smembers(FoX..'User:Donky:'..msg.chat_id_)
 if #basicconstructor ~= 0 then basicconstructort = 'المنشئين الاساسيين • ' else basicconstructort = '' end
 if #constructor ~= 0 then constructort = 'المنشئين • ' else constructort = '' end
@@ -8435,11 +8445,11 @@ if #admins ~= 0 then adminst = 'الادمنيه • ' else adminst = '' end
 if #vipmem ~= 0 then vipmemt = 'المميزين • ' else vipmemt = '' end
 if #donky ~= 0 then donkyt = 'المطايه • ' else donkyt = '' end
 if #basicconstructor ~= 0 or #constructor ~= 0 or #Managers ~= 0 or #admins ~= 0 or #vipmem ~= 0 or #donky ~= 0 then 
-redis:del(FoX..'BasicConstructor:Rd:'..msg.chat_id_)
-redis:del(FoX..'Constructor:Rd:'..msg.chat_id_)
-redis:del(FoX..'Manager:Rd:'..msg.chat_id_)
-redis:del(FoX..'Mod:Rd:'..msg.chat_id_)
-redis:del(FoX..'Special:Rd:'..msg.chat_id_)
+redis:del(FoX..'Abs:BasicConstructor:'..msg.chat_id_)
+redis:del(FoX..'Abs:Constructor:'..msg.chat_id_)
+redis:del(FoX..'Abs:Managers:'..msg.chat_id_)
+redis:del(FoX..'Abs:Admins:'..msg.chat_id_)
+redis:del(FoX..'Abs:VipMem:'..msg.chat_id_)
 redis:del(FoX..'User:Donky:'..msg.chat_id_)
 SendFoX(msg.chat_id_, msg.id_, 1, "⌁︙تم حذف جميع الرتب التاليه ↫ ❨ "..basicconstructort..constructort..Managerst..adminst..vipmemt..donkyt.." ❩ بنجاح \n ✓", 1, 'md')
 else
@@ -9101,13 +9111,13 @@ local ChatId = text:match('كشف (-%d+)')
 if not SudoBot(msg) then
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙للمطورين فقط', 1, 'md')
 else
-local ConstructorList = redis:scard(FoX.."Constructor:Rd:"..ChatId) or 0
+local ConstructorList = redis:scard(FoX.."Abs:Constructor:"..ChatId) or 0
 local BanedList = redis:scard(FoX.."Abs:Ban:"..ChatId) or 0
-local ManagerList = redis:scard(FoX.."Manager:Rd:"..ChatId) or 0
+local ManagerList = redis:scard(FoX.."Abs:Managers:"..ChatId) or 0
 local MutedList = redis:scard(FoX.."Abs:Muted:"..ChatId) or 0
 local TkeedList = redis:scard(FoX.."Abs:Abs:Tkeed:"..ChatId) or 0
-local AdminsList = redis:scard(FoX.."Mod:Rd:"..ChatId) or 0
-local VipList = redis:scard(FoX.."Special:Rd:"..ChatId) or 0
+local AdminsList = redis:scard(FoX.."Abs:Admins:"..ChatId) or 0
+local VipList = redis:scard(FoX.."Abs:VipMem:"..ChatId) or 0
 local LinkGp = json:decode(https.request('https://api.telegram.org/bot'..TokenBot..'/exportChatInviteLink?chat_id='..ChatId))
 if LinkGp.ok == true then LinkGroup = LinkGp.result else LinkGroup = 't.me/Dev_Prox' end
 tdcli_function({ID ="GetChat",chat_id_=ChatId},function(arg,dp)
@@ -9225,22 +9235,22 @@ tdcli_function ({ID = "GetChannelMembers",channel_id_ = msg.chat_id_:gsub("-100"
 local admins = abbas.members_
 for i=0 , #admins do
 if abbas.members_[i].bot_info_ == false and abbas.members_[i].status_.ID == "ChatMemberStatusEditor" then
-redis:sadd(FoX..'Mod:Rd:'..msg.chat_id_, admins[i].user_id_)
+redis:sadd(FoX..'Abs:Admins:'..msg.chat_id_, admins[i].user_id_)
 tdcli_function ({ID = "GetUser",user_id_ = admins[i].user_id_},function(arg,ba) 
 if ba.first_name_ == false then
-redis:srem(FoX..'Mod:Rd:'..msg.chat_id_, admins[i].user_id_)
+redis:srem(FoX..'Abs:Admins:'..msg.chat_id_, admins[i].user_id_)
 end
 end,nil)
 else
-redis:sadd(FoX..'Mod:Rd:'..msg.chat_id_, admins[i].user_id_)
+redis:sadd(FoX..'Abs:Admins:'..msg.chat_id_, admins[i].user_id_)
 end
 if abbas.members_[i].status_.ID == "ChatMemberStatusCreator" then
-redis:sadd(FoX.."BasicConstructor:Rd:"..msg.chat_id_,admins[i].user_id_)
-redis:sadd(FoX.."Basic:Constructor:"..msg.chat_id_,admins[i].user_id_)
+redis:sadd(FoX.."Abs:BasicConstructor:"..msg.chat_id_,admins[i].user_id_)
+redis:sadd(FoX.."Abs:AbsConstructor:"..msg.chat_id_,admins[i].user_id_)
 tdcli_function ({ID = "GetUser",user_id_ = admins[i].user_id_},function(arg,ba) 
 if ba.first_name_ == false then
-redis:srem(FoX.."BasicConstructor:Rd:"..msg.chat_id_,admins[i].user_id_)
-redis:srem(FoX.."Basic:Constructor:"..msg.chat_id_,admins[i].user_id_)
+redis:srem(FoX.."Abs:BasicConstructor:"..msg.chat_id_,admins[i].user_id_)
+redis:srem(FoX.."Abs:AbsConstructor:"..msg.chat_id_,admins[i].user_id_)
 end
 end,nil)  
 end 
@@ -9375,8 +9385,8 @@ else
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙جاري ارسال نسخه تحتوي على ↫ '..#List..' مجموعه', 1, 'md')
 local Text = "⌁︙Source FoX\n⌁︙File Bot Groups\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"
 for k,v in pairs(List) do
-local GroupsManagers = redis:scard(FoX.."Manager:Rd:"..v) or 0
-local GroupsAdmins = redis:scard(FoX.."Mod:Rd:"..v) or 0
+local GroupsManagers = redis:scard(FoX.."Abs:Managers:"..v) or 0
+local GroupsAdmins = redis:scard(FoX.."Abs:Admins:"..v) or 0
 local Groupslink = redis:get(FoX.."Abs:Groups:Links" ..v)
 Text = Text..k.." ↬ ⤈ \n⌁︙Group ID ↬ "..v.."\n⌁︙Group Link ↬ "..(Groupslink or "Not Found").."\n⌁︙Group Managers ↬ "..GroupsManagers.."\n⌁︙Group Admins ↬ "..GroupsAdmins.."\n┉ ≈ ┉ ≈ ┉ ≈ ┉ ≈ ┉\n"
 end
@@ -10363,7 +10373,7 @@ if SecondSudo(msg) then
 if text == "تحديث السورس" or text == "تحديث سورس" then 
 SendFoX(msg.chat_id_, msg.id_, 1, '⌁︙جاري تحديث سورس بروكس', 1, 'md') 
 os.execute('rm -rf FoX.lua') 
-os.execute('wget https://raw.githubusercontent.com/FoX-FoX2/FoX/main/FoX.lua') 
+os.execute('wget https://raw.githubusercontent.com/FoXTEAM/FoX/master/FoX.lua') 
 dofile('FoX.lua') 
 io.popen("rm -rf ../.telegram-cli/*")
 print("\27[31;47m\n          ( تم تحديث السورس )          \n\27[0;34;49m\n") 
@@ -10391,7 +10401,7 @@ end
 send(msg.chat_id_, msg.id_,Files)
 end
 if text == "متجر الملفات" or text == 'المتجر' then
-local Get_Files, res = https.request("https://raw.githubusercontent.com/FoX-FoX2/FoxFiles/main/getfile.json")
+local Get_Files, res = https.request("https://raw.githubusercontent.com/FoXTEAM/FoXFiles/master/getfile.json")
 if res == 200 then
 local Get_info, res = pcall(JSON.decode,Get_Files);
 vardump(res.plugins_)
@@ -10423,7 +10433,7 @@ end
 if text and text:match("^(تعطيل ملف) (.*)(.lua)$") then
 local FileGet = {string.match(text, "^(تعطيل ملف) (.*)(.lua)$")}
 local FileName = FileGet[2]..'.lua'
-local GetJson, Res = https.request("https://raw.githubusercontent.com/FoX-FoX2/FoxFiles/main/FoxFiles/"..FileName)
+local GetJson, Res = https.request("https://raw.githubusercontent.com/FoXTEAM/FoXFiles/master/FoXFiles/"..FileName)
 if Res == 200 then
 os.execute("rm -fr Files/"..FileName)
 send(msg.chat_id_, msg.id_,"\n⌁︙الملف ↫ *"..FileName.."*\n⌁︙تم تعطيله وحذفه من البوت بنجاح") 
@@ -10435,7 +10445,7 @@ end
 if text and text:match("^(تفعيل ملف) (.*)(.lua)$") then
 local FileGet = {string.match(text, "^(تفعيل ملف) (.*)(.lua)$")}
 local FileName = FileGet[2]..'.lua'
-local GetJson, Res = https.request("https://raw.githubusercontent.com/FoX-FoX2/FoxFiles/main/FoxFiles/"..FileName)
+local GetJson, Res = https.request("https://raw.githubusercontent.com/FoXTEAM/FoXFiles/master/FoXFiles/"..FileName)
 if Res == 200 then
 local ChekAuto = io.open("Files/"..FileName,'w+')
 ChekAuto:write(GetJson)
