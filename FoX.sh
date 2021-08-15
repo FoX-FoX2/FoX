@@ -44,16 +44,6 @@ cd .. ;sudo rm -rf luarocks*
 sudo timedatectl set-timezone Asia/Baghdad
 echo -e "\033[0;36m"
 echo -e "---------------------------------------------"
-echo -e "|    ____             ____                  |"
-echo -e "|   |  _ \  _____   _|  _ \ _ __ _____  __  |"
-echo -e "|   | | | |/ _ \ \ / / |_) | '__/ _ \ \/ /  |"
-echo -e "|   | |_| |  __/\ V /|  __/| | | (_) >  <   |"
-echo -e "|   |____/ \___| \_/ |_|   |_|  \___/_/\_\  |"
-echo -e "|-------------------------------------------|"
-echo -e "|This Source Was Developed By (ABS) @IQ_ABS.|"
-echo -e "|  This Is The Source Channel @Dev_Prox .   |"
-echo -e "|               - DevProx -                 |"
-echo -e "---------------------------------------------"
 echo -e "\033[0m"
 cd $THIS_DIR && sudo chmod +x tg
 lua FoX.lua
