@@ -460,6 +460,50 @@ end
 end
 send(chat,msg.id_,"⌁︙تم رفع النسخه بنجاح \n⌁︙تم تفعيل جميع المجموعات \n⌁︙تم استرجاع مشرفين المجموعات \n⌁︙تم استرجاع اوامر القفل والفتح في جميع مجموعات البوت ")
 end
+function AddFile_Bot(msg,chat,ID_FILE,File_Name)
+if File_Name:match('.json') then
+if tonumber(File_Name:match('(%d+)')) ~= tonumber(bot_id) then 
+send(chat,msg.id_," ✥  ملف نسخه ليس لهاذا البوت")
+return false 
+end      
+local File = json:decode(https.request('https://api.telegram.org/bot'.. token..'/getfile?file_id='..ID_FILE) ) 
+download_to_file('https://api.telegram.org/file/bot'..token..'/'..File.result.file_path, ''..File_Name) 
+send(chat,msg.id_," ✥  جاري ...\n ✥  رفع الملف الان")
+else
+send(chat,msg.id_,"* ✥ عذرا الملف ليس بصيغة {JSON} يرجى رفع الملف الصحيح*")
+end      
+local info_file = io.open('./'..bot_id..'.json', "r"):read('*a')
+local groups = JSON.decode(info_file)
+for idg,v in pairs(groups.GP_BOT) do
+database:sadd(bot_id..'Abs:Groups',idg)  
+redis:set(FoX.."Abs:Lock:Bots"..IdGps,"del") redis:hset(FoX.."Abs:Spam:Group:User"..IdGps ,"Spam:User","keed") 
+list ={'Abs:Lock:Links','Abs:Lock:Contact','Abs:Lock:Forwards','Abs:Lock:Videos','Abs:Lock:Gifs','Abs:Lock:EditMsgs','Abs:Lock:Stickers','Abs:Lock:Farsi','Abs:Lock:Spam','Abs:Lock:WebLinks','Abs:Lock:Photo'}
+for i,lock in pairs(list) do 
+redis:set(FoX..lock..IdGps,true)
+end
+if v.MNSH then
+for k,idmsh in pairs(v.MNSH) do
+database:sadd(bot_id..'Abs:Constructor'..idg,idmsh)
+end
+end
+if v.MDER then
+for k,idmder in pairs(v.MDER) do
+database:sadd(bot_id..'Abs:Managers'..idg,idmder)  
+end
+end
+if v.MOD then
+for k,idmod in pairs(v.MOD) do
+database:sadd(bot_id..'Abs:Admins'..idg,idmod)  
+end
+end
+if v.ASAS then
+for k,idASAS in pairs(v.ASAS) do
+database:sadd(bot_id..'Abs:BasicConstructor'..idg,idASAS)  
+end
+end
+end
+send(chat,msg.id_,"\n ✥ تم رفع الملف بنجاح وتفعيل الكروبات\n ✥ ورفع {الامنشئين الاساسين ; والمنشئين ; والمدراء; والادمنيه} بنجاح")
+end
 --     Source FoX     --
 function resolve_username(username,cb)
 tdcli_function ({
@@ -3231,6 +3275,18 @@ File:write(GetJson)
 File:close()
 sendDocument(msg.chat_id_, msg.id_, 0, 1, nil, './'..FoX..'.json', '⌁︙يحتوي الملف على ↫ '..#List..' مجموعه',dl_cb, nil)
 io.popen('rm -rf ./'..FoX..'.json')
+end
+if text == 'رفع خزن فوكس' then   
+if tonumber(msg.reply_to_message_id_) > 0 then
+function by_reply(extra, result, success)   
+if result.content_.document_ then 
+local ID_FILE = result.content_.document_.document_.persistent_id_ 
+local File_Name = result.content_.document_.file_name_
+AddFile_Bot(msg,msg.chat_id_,ID_FILE,File_Name)
+end   
+end
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
 end
 if text and (text == 'رفع النسخه' or text == 'رفع النسخه الاحتياطيه' or text == 'رفع نسخه الاحتياطيه') and tonumber(msg.reply_to_message_id_) > 0 then   
 function by_reply(extra, result, success)   
