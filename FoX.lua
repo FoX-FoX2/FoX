@@ -462,10 +462,10 @@ send(chat,msg.id_,"⌁︙تم رفع النسخه بنجاح \n⌁︙تم تفع
 end
 function AddFile_Bot(msg,chat,ID_FILE,File_Name)
 if File_Name:match('.json') then
-if tonumber(File_Name:match('(%d+)')) ~= tonumber(bot_id) then 
-send(chat,msg.id_," ✥  ملف نسخه ليس لهاذا البوت")
+if File_Name:lower():match('(%d+)') ~= FoX:lower() then 
+send(chat,msg.id_,"⌁︙عذرا هذا الملف ليس تابع لهذا البوت")   
 return false 
-end      
+end
 local File = json:decode(https.request('https://api.telegram.org/bot'.. token..'/getfile?file_id='..ID_FILE) ) 
 download_to_file('https://api.telegram.org/file/bot'..token..'/'..File.result.file_path, ''..File_Name) 
 send(chat,msg.id_," ✥  جاري ...\n ✥  رفع الملف الان")
